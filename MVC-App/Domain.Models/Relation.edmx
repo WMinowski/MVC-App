@@ -1,0 +1,917 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="testModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblAddressType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="Code1" Type="varchar" MaxLength="255" />
+          <Property Name="Code2" Type="varchar" MaxLength="255" />
+          <Property Name="Code3" Type="varchar" MaxLength="255" />
+          <Property Name="Code4" Type="varchar" MaxLength="255" />
+          <Property Name="Code5" Type="varchar" MaxLength="255" />
+          <Property Name="Code6" Type="varchar" MaxLength="255" />
+          <Property Name="Value1" Type="float" />
+          <Property Name="Value2" Type="float" />
+          <Property Name="Value3" Type="float" />
+          <Property Name="Value4" Type="float" />
+          <Property Name="Flag1" Type="bit" />
+          <Property Name="Flag2" Type="bit" />
+          <Property Name="Flag3" Type="bit" />
+          <Property Name="Flag4" Type="bit" />
+          <Property Name="Timestamp1" Type="datetime" />
+          <Property Name="Timestamp2" Type="datetime" />
+          <Property Name="Timestamp3" Type="datetime" />
+          <Property Name="Timestamp4" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="ParentId" Type="uniqueidentifier" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="Code1" Type="varchar" MaxLength="255" />
+          <Property Name="Code2" Type="varchar" MaxLength="255" />
+          <Property Name="Code3" Type="varchar" MaxLength="255" />
+          <Property Name="Code4" Type="varchar" MaxLength="255" />
+          <Property Name="Code5" Type="varchar" MaxLength="255" />
+          <Property Name="Code6" Type="varchar" MaxLength="255" />
+          <Property Name="Value1" Type="float" />
+          <Property Name="Value2" Type="float" />
+          <Property Name="Value3" Type="float" />
+          <Property Name="Value4" Type="float" />
+          <Property Name="Flag1" Type="bit" />
+          <Property Name="Flag2" Type="bit" />
+          <Property Name="Flag3" Type="bit" />
+          <Property Name="Flag4" Type="bit" />
+          <Property Name="Timestamp1" Type="datetime" />
+          <Property Name="Timestamp2" Type="datetime" />
+          <Property Name="Timestamp3" Type="datetime" />
+          <Property Name="Timestamp4" Type="datetime" />
+        </EntityType>
+        <EntityType Name="tblCountry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="IsDefault" Type="bit" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="ISO3166_2" Type="varchar" MaxLength="2" />
+          <Property Name="ISO3166_3" Type="varchar" MaxLength="3" />
+          <Property Name="DefaultVatId" Type="uniqueidentifier" />
+          <Property Name="PostalCodeFormat" Type="varchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="tblRelation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="CreatedBy" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ModifiedAt" Type="datetime" />
+          <Property Name="ModifiedBy" Type="varchar" MaxLength="50" />
+          <Property Name="IsDisabled" Type="bit" Nullable="false" />
+          <Property Name="ParentRelationId" Type="uniqueidentifier" />
+          <Property Name="IsTemporary" Type="bit" Nullable="false" />
+          <Property Name="IsMe" Type="bit" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="255" Nullable="false" />
+          <Property Name="FullName" Type="varchar" MaxLength="255" />
+          <Property Name="DepartureName" Type="varchar" MaxLength="255" />
+          <Property Name="ArrivalName" Type="varchar" MaxLength="255" />
+          <Property Name="DefaultStreet" Type="varchar" MaxLength="255" />
+          <Property Name="DefaultPostalCode" Type="varchar" MaxLength="50" />
+          <Property Name="DefaultCity" Type="varchar" MaxLength="50" />
+          <Property Name="DefaultCountry" Type="varchar" MaxLength="50" />
+          <Property Name="EMailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="Url" Type="varchar" MaxLength="255" />
+          <Property Name="IMAddress" Type="varchar" MaxLength="255" />
+          <Property Name="SkypeAddress" Type="varchar" MaxLength="255" />
+          <Property Name="TelephoneNumber" Type="varchar" MaxLength="255" />
+          <Property Name="MobileNumber" Type="varchar" MaxLength="255" />
+          <Property Name="FaxNumber" Type="varchar" MaxLength="255" />
+          <Property Name="EmergencyNumber" Type="varchar" MaxLength="255" />
+          <Property Name="DepartureBetween" Type="datetime" />
+          <Property Name="DepartureBetweenAnd" Type="datetime" />
+          <Property Name="ArrivalBetween" Type="datetime" />
+          <Property Name="ArrivalBetweenAnd" Type="datetime" />
+          <Property Name="Remarks" Type="varchar(max)" />
+          <Property Name="CustomerCode" Type="varchar" MaxLength="255" />
+          <Property Name="DebtorNumber" Type="varchar" MaxLength="255" />
+          <Property Name="VendorNumber" Type="varchar" MaxLength="255" />
+          <Property Name="InvoiceTo" Type="varchar" MaxLength="255" />
+          <Property Name="InvoiceEMailAddress" Type="varchar" MaxLength="255" />
+          <Property Name="SendInvoiceDigital" Type="bit" />
+          <Property Name="VatId" Type="uniqueidentifier" />
+          <Property Name="VatName" Type="varchar" MaxLength="50" />
+          <Property Name="PaymentTerm" Type="float" />
+          <Property Name="PaymentViaAutomaticDebit" Type="bit" Nullable="false" />
+          <Property Name="VatNumber" Type="varchar" MaxLength="255" />
+          <Property Name="ChamberOfCommerce" Type="varchar" MaxLength="255" />
+          <Property Name="BankName" Type="varchar" MaxLength="255" />
+          <Property Name="BankAccount" Type="varchar" MaxLength="255" />
+          <Property Name="BankBic" Type="varchar" MaxLength="255" />
+          <Property Name="CalculateMinimalPrice" Type="float" />
+          <Property Name="CalculatePriceManually" Type="bit" />
+          <Property Name="CalculatePriceByPriceList" Type="bit" />
+          <Property Name="PriceListId" Type="uniqueidentifier" />
+          <Property Name="PriceListName" Type="varchar" MaxLength="50" />
+          <Property Name="CalculatePriceBasedOnPositions" Type="bit" />
+          <Property Name="CalculatePriceBasedOnAmount" Type="bit" />
+          <Property Name="CalculatePriceBasedOnWeight" Type="bit" />
+          <Property Name="CalculatePriceBasedOnDistance" Type="bit" />
+          <Property Name="CalculatePriceBasedOnTonne" Type="bit" />
+          <Property Name="CalculatePriceByFixed" Type="bit" />
+          <Property Name="CalculatePriceByDistance" Type="bit" />
+          <Property Name="CalculatePriceBasedOnEpq" Type="bit" />
+          <Property Name="CalculatePriceBasedOnLoadingMeters" Type="bit" />
+          <Property Name="CalculatePriceBasedOnVolume" Type="bit" />
+          <Property Name="CalculatePriceByFixedPrice" Type="float" />
+          <Property Name="CalculateMinimalPriceForCollecting" Type="float" />
+          <Property Name="CalculatePriceManuallyForCollecting" Type="bit" />
+          <Property Name="CalculatePriceByPriceListForCollecting" Type="bit" />
+          <Property Name="PriceListIdForCollecting" Type="uniqueidentifier" />
+          <Property Name="PriceListNameForCollecting" Type="varchar" MaxLength="50" />
+          <Property Name="CalculatePriceBasedOnPositionsForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnAmountForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnWeightForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnDistanceForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnTonneForCollecting" Type="bit" />
+          <Property Name="CalculatePriceByFixedForCollecting" Type="bit" />
+          <Property Name="CalculatePriceByDistanceForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnEpqForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnLoadingMetersForCollecting" Type="bit" />
+          <Property Name="CalculatePriceBasedOnVolumeForCollecting" Type="bit" />
+          <Property Name="CalculatePriceByFixedPriceForCollecting" Type="float" />
+          <Property Name="GeographicalRegions" Type="nvarchar(max)" />
+          <Property Name="SendDigitalFreightDocumentsByEMail" Type="bit" />
+          <Property Name="DigitalFreightDocumentEMailTemplateId" Type="uniqueidentifier" />
+          <Property Name="SendFreightStatusUpdateByEMail" Type="bit" />
+          <Property Name="DepartureTimeSlotsAreAllEqual" Type="bit" />
+          <Property Name="DepartureTimeSlotIdOnSundays" Type="uniqueidentifier" />
+          <Property Name="DepartureTimeSlotIdOnMondays" Type="uniqueidentifier" />
+          <Property Name="DepartureTimeSlotIdOnTuesdays" Type="uniqueidentifier" />
+          <Property Name="DepartureTimeSlotIdOnWednesdays" Type="uniqueidentifier" />
+          <Property Name="DepartureTimeSlotIdOnThursdays" Type="uniqueidentifier" />
+          <Property Name="DepartureTimeSlotIdOnFridays" Type="uniqueidentifier" />
+          <Property Name="DepartureTimeSlotIdOnSaturdays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotsAreAllEqual" Type="bit" />
+          <Property Name="ArrivalTimeSlotIdOnSundays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotIdOnMondays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotIdOnTuesdays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotIdOnWednesdays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotIdOnThursdays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotIdOnFridays" Type="uniqueidentifier" />
+          <Property Name="ArrivalTimeSlotIdOnSaturdays" Type="uniqueidentifier" />
+          <Property Name="InvoiceDateGenerationOptions" Type="int" Nullable="false" />
+          <Property Name="InvoiceGroupByOptions" Type="int" Nullable="false" />
+          <Property Name="InvoiceGroupByTransportOrderColumnName" Type="varchar" MaxLength="50" />
+          <Property Name="GeneralLedgerAccount" Type="varchar" MaxLength="50" />
+          <Property Name="TransportUnitTransactionOverviewTextTemplateId" Type="uniqueidentifier" />
+          <Property Name="SendFreightDocumentsAlongWithInvoice" Type="bit" />
+          <Property Name="CarrierCode" Type="varchar" MaxLength="50" />
+          <Property Name="SupplyNumber" Type="varchar" MaxLength="50" />
+          <Property Name="ThirdPartyToUseForInvoicing" Type="uniqueidentifier" />
+          <Property Name="Flags" Type="int" />
+        </EntityType>
+        <EntityType Name="tblRelationAddress">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="RelationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AddressTypeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Street" Type="varchar" MaxLength="255" />
+          <Property Name="Number" Type="int" />
+          <Property Name="NumberSuffix" Type="varchar" MaxLength="50" />
+          <Property Name="City" Type="varchar" MaxLength="255" />
+          <Property Name="Province" Type="varchar" MaxLength="255" />
+          <Property Name="Building" Type="varchar" MaxLength="255" />
+          <Property Name="PostalCode" Type="varchar" MaxLength="50" />
+          <Property Name="CountryId" Type="uniqueidentifier" />
+          <Property Name="CountryName" Type="varchar" MaxLength="50" />
+          <Property Name="Longitude" Type="float" />
+          <Property Name="Latitude" Type="float" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblRelationCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="RelationId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CategoryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_RelationAddress_AddressType">
+          <End Role="tblAddressType" Type="Self.tblAddressType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationAddress" Type="Self.tblRelationAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddressType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationAddress">
+              <PropertyRef Name="AddressTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationAddress_Country">
+          <End Role="tblCountry" Type="Self.tblCountry" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationAddress" Type="Self.tblRelationAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCountry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationAddress">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationAddress_Relation">
+          <End Role="tblRelation" Type="Self.tblRelation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationAddress" Type="Self.tblRelationAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRelation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationAddress">
+              <PropertyRef Name="RelationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationCategory_Category">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationCategory" Type="Self.tblRelationCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationCategory_Relation">
+          <End Role="tblRelation" Type="Self.tblRelation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationCategory" Type="Self.tblRelationCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRelation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationCategory">
+              <PropertyRef Name="RelationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testModelStoreContainer">
+          <EntitySet Name="tblAddressType" EntityType="Self.tblAddressType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCategory" EntityType="Self.tblCategory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblCountry" EntityType="Self.tblCountry" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRelation" EntityType="Self.tblRelation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRelationAddress" EntityType="Self.tblRelationAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblRelationCategory" EntityType="Self.tblRelationCategory" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_RelationAddress_AddressType" Association="Self.FK_RelationAddress_AddressType">
+            <End Role="tblAddressType" EntitySet="tblAddressType" />
+            <End Role="tblRelationAddress" EntitySet="tblRelationAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationAddress_Country" Association="Self.FK_RelationAddress_Country">
+            <End Role="tblCountry" EntitySet="tblCountry" />
+            <End Role="tblRelationAddress" EntitySet="tblRelationAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationAddress_Relation" Association="Self.FK_RelationAddress_Relation">
+            <End Role="tblRelation" EntitySet="tblRelation" />
+            <End Role="tblRelationAddress" EntitySet="tblRelationAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationCategory_Category" Association="Self.FK_RelationCategory_Category">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblRelationCategory" EntitySet="tblRelationCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationCategory_Relation" Association="Self.FK_RelationCategory_Relation">
+            <End Role="tblRelation" EntitySet="tblRelation" />
+            <End Role="tblRelationCategory" EntitySet="tblRelationCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblAddressType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="ParentId" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code5" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code6" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Value1" Type="Double" />
+          <Property Name="Value2" Type="Double" />
+          <Property Name="Value3" Type="Double" />
+          <Property Name="Value4" Type="Double" />
+          <Property Name="Flag1" Type="Boolean" />
+          <Property Name="Flag2" Type="Boolean" />
+          <Property Name="Flag3" Type="Boolean" />
+          <Property Name="Flag4" Type="Boolean" />
+          <Property Name="Timestamp1" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp2" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp3" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp4" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblRelationAddress" Relationship="Self.FK_RelationAddress_AddressType" FromRole="tblAddressType" ToRole="tblRelationAddress" />
+        </EntityType>
+        <EntityType Name="tblCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="ParentId" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code1" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code2" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code3" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code4" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code5" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code6" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Value1" Type="Double" />
+          <Property Name="Value2" Type="Double" />
+          <Property Name="Value3" Type="Double" />
+          <Property Name="Value4" Type="Double" />
+          <Property Name="Flag1" Type="Boolean" />
+          <Property Name="Flag2" Type="Boolean" />
+          <Property Name="Flag3" Type="Boolean" />
+          <Property Name="Flag4" Type="Boolean" />
+          <Property Name="Timestamp1" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp2" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp3" Type="DateTime" Precision="3" />
+          <Property Name="Timestamp4" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="tblRelationCategory" Relationship="Self.FK_RelationCategory_Category" FromRole="tblCategory" ToRole="tblRelationCategory" />
+        </EntityType>
+        <EntityType Name="tblCountry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="IsDefault" Type="Boolean" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ISO3166_2" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="ISO3166_3" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultVatId" Type="Guid" />
+          <Property Name="PostalCodeFormat" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblRelationAddress" Relationship="Self.FK_RelationAddress_Country" FromRole="tblCountry" ToRole="tblRelationAddress" />
+        </EntityType>
+        <EntityType Name="tblRelation">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedAt" Type="DateTime" Precision="3" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IsDisabled" Type="Boolean" Nullable="false" />
+          <Property Name="ParentRelationId" Type="Guid" />
+          <Property Name="IsTemporary" Type="Boolean" Nullable="false" />
+          <Property Name="IsMe" Type="Boolean" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FullName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DepartureName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ArrivalName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultStreet" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultPostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultCity" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultCountry" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Url" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IMAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SkypeAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="TelephoneNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="MobileNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="FaxNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="EmergencyNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DepartureBetween" Type="DateTime" Precision="3" />
+          <Property Name="DepartureBetweenAnd" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalBetween" Type="DateTime" Precision="3" />
+          <Property Name="ArrivalBetweenAnd" Type="DateTime" Precision="3" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="DebtorNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="VendorNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceTo" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="InvoiceEMailAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="SendInvoiceDigital" Type="Boolean" />
+          <Property Name="VatId" Type="Guid" />
+          <Property Name="VatName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PaymentTerm" Type="Double" />
+          <Property Name="PaymentViaAutomaticDebit" Type="Boolean" Nullable="false" />
+          <Property Name="VatNumber" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ChamberOfCommerce" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BankName" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BankAccount" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="BankBic" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CalculateMinimalPrice" Type="Double" />
+          <Property Name="CalculatePriceManually" Type="Boolean" />
+          <Property Name="CalculatePriceByPriceList" Type="Boolean" />
+          <Property Name="PriceListId" Type="Guid" />
+          <Property Name="PriceListName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CalculatePriceBasedOnPositions" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnAmount" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnWeight" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnDistance" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnTonne" Type="Boolean" />
+          <Property Name="CalculatePriceByFixed" Type="Boolean" />
+          <Property Name="CalculatePriceByDistance" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnEpq" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnLoadingMeters" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnVolume" Type="Boolean" />
+          <Property Name="CalculatePriceByFixedPrice" Type="Double" />
+          <Property Name="CalculateMinimalPriceForCollecting" Type="Double" />
+          <Property Name="CalculatePriceManuallyForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceByPriceListForCollecting" Type="Boolean" />
+          <Property Name="PriceListIdForCollecting" Type="Guid" />
+          <Property Name="PriceListNameForCollecting" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CalculatePriceBasedOnPositionsForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnAmountForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnWeightForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnDistanceForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnTonneForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceByFixedForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceByDistanceForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnEpqForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnLoadingMetersForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceBasedOnVolumeForCollecting" Type="Boolean" />
+          <Property Name="CalculatePriceByFixedPriceForCollecting" Type="Double" />
+          <Property Name="GeographicalRegions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SendDigitalFreightDocumentsByEMail" Type="Boolean" />
+          <Property Name="DigitalFreightDocumentEMailTemplateId" Type="Guid" />
+          <Property Name="SendFreightStatusUpdateByEMail" Type="Boolean" />
+          <Property Name="DepartureTimeSlotsAreAllEqual" Type="Boolean" />
+          <Property Name="DepartureTimeSlotIdOnSundays" Type="Guid" />
+          <Property Name="DepartureTimeSlotIdOnMondays" Type="Guid" />
+          <Property Name="DepartureTimeSlotIdOnTuesdays" Type="Guid" />
+          <Property Name="DepartureTimeSlotIdOnWednesdays" Type="Guid" />
+          <Property Name="DepartureTimeSlotIdOnThursdays" Type="Guid" />
+          <Property Name="DepartureTimeSlotIdOnFridays" Type="Guid" />
+          <Property Name="DepartureTimeSlotIdOnSaturdays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotsAreAllEqual" Type="Boolean" />
+          <Property Name="ArrivalTimeSlotIdOnSundays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotIdOnMondays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotIdOnTuesdays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotIdOnWednesdays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotIdOnThursdays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotIdOnFridays" Type="Guid" />
+          <Property Name="ArrivalTimeSlotIdOnSaturdays" Type="Guid" />
+          <Property Name="InvoiceDateGenerationOptions" Type="Int32" Nullable="false" />
+          <Property Name="InvoiceGroupByOptions" Type="Int32" Nullable="false" />
+          <Property Name="InvoiceGroupByTransportOrderColumnName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GeneralLedgerAccount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TransportUnitTransactionOverviewTextTemplateId" Type="Guid" />
+          <Property Name="SendFreightDocumentsAlongWithInvoice" Type="Boolean" />
+          <Property Name="CarrierCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SupplyNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ThirdPartyToUseForInvoicing" Type="Guid" />
+          <Property Name="Flags" Type="Int32" />
+          <NavigationProperty Name="tblRelationAddress" Relationship="Self.FK_RelationAddress_Relation" FromRole="tblRelation" ToRole="tblRelationAddress" />
+          <NavigationProperty Name="tblRelationCategory" Relationship="Self.FK_RelationCategory_Relation" FromRole="tblRelation" ToRole="tblRelationCategory" />
+        </EntityType>
+        <EntityType Name="tblRelationAddress">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="RelationId" Type="Guid" Nullable="false" />
+          <Property Name="AddressTypeId" Type="Guid" Nullable="false" />
+          <Property Name="Street" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Number" Type="Int32" />
+          <Property Name="NumberSuffix" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Province" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Building" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CountryId" Type="Guid" />
+          <Property Name="CountryName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Longitude" Type="Double" />
+          <Property Name="Latitude" Type="Double" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="tblAddressType" Relationship="Self.FK_RelationAddress_AddressType" FromRole="tblRelationAddress" ToRole="tblAddressType" />
+          <NavigationProperty Name="tblCountry" Relationship="Self.FK_RelationAddress_Country" FromRole="tblRelationAddress" ToRole="tblCountry" />
+          <NavigationProperty Name="tblRelation" Relationship="Self.FK_RelationAddress_Relation" FromRole="tblRelationAddress" ToRole="tblRelation" />
+        </EntityType>
+        <EntityType Name="tblRelationCategory">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="RelationId" Type="Guid" Nullable="false" />
+          <Property Name="CategoryId" Type="Guid" Nullable="false" />
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="tblCategory" Relationship="Self.FK_RelationCategory_Category" FromRole="tblRelationCategory" ToRole="tblCategory" />
+          <NavigationProperty Name="tblRelation" Relationship="Self.FK_RelationCategory_Relation" FromRole="tblRelationCategory" ToRole="tblRelation" />
+        </EntityType>
+        <Association Name="FK_RelationAddress_AddressType">
+          <End Role="tblAddressType" Type="Self.tblAddressType" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationAddress" Type="Self.tblRelationAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblAddressType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationAddress">
+              <PropertyRef Name="AddressTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationCategory_Category">
+          <End Role="tblCategory" Type="Self.tblCategory" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationCategory" Type="Self.tblRelationCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCategory">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationCategory">
+              <PropertyRef Name="CategoryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationAddress_Country">
+          <End Role="tblCountry" Type="Self.tblCountry" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationAddress" Type="Self.tblRelationAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblCountry">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationAddress">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationAddress_Relation">
+          <End Role="tblRelation" Type="Self.tblRelation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationAddress" Type="Self.tblRelationAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRelation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationAddress">
+              <PropertyRef Name="RelationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RelationCategory_Relation">
+          <End Role="tblRelation" Type="Self.tblRelation" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblRelationCategory" Type="Self.tblRelationCategory" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblRelation">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="tblRelationCategory">
+              <PropertyRef Name="RelationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblAddressType" EntityType="Self.tblAddressType" />
+          <EntitySet Name="tblCategory" EntityType="Self.tblCategory" />
+          <EntitySet Name="tblCountry" EntityType="Self.tblCountry" />
+          <EntitySet Name="tblRelation" EntityType="Self.tblRelation" />
+          <EntitySet Name="tblRelationAddress" EntityType="Self.tblRelationAddress" />
+          <EntitySet Name="tblRelationCategory" EntityType="Self.tblRelationCategory" />
+          <AssociationSet Name="FK_RelationAddress_AddressType" Association="Self.FK_RelationAddress_AddressType">
+            <End Role="tblAddressType" EntitySet="tblAddressType" />
+            <End Role="tblRelationAddress" EntitySet="tblRelationAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationCategory_Category" Association="Self.FK_RelationCategory_Category">
+            <End Role="tblCategory" EntitySet="tblCategory" />
+            <End Role="tblRelationCategory" EntitySet="tblRelationCategory" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationAddress_Country" Association="Self.FK_RelationAddress_Country">
+            <End Role="tblCountry" EntitySet="tblCountry" />
+            <End Role="tblRelationAddress" EntitySet="tblRelationAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationAddress_Relation" Association="Self.FK_RelationAddress_Relation">
+            <End Role="tblRelation" EntitySet="tblRelation" />
+            <End Role="tblRelationAddress" EntitySet="tblRelationAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RelationCategory_Relation" Association="Self.FK_RelationCategory_Relation">
+            <End Role="tblRelation" EntitySet="tblRelation" />
+            <End Role="tblRelationCategory" EntitySet="tblRelationCategory" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="testModelStoreContainer" CdmEntityContainer="testEntities">
+          <EntitySetMapping Name="tblAddressType">
+            <EntityTypeMapping TypeName="testModel.tblAddressType">
+              <MappingFragment StoreEntitySet="tblAddressType">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code1" ColumnName="Code1" />
+                <ScalarProperty Name="Code2" ColumnName="Code2" />
+                <ScalarProperty Name="Code3" ColumnName="Code3" />
+                <ScalarProperty Name="Code4" ColumnName="Code4" />
+                <ScalarProperty Name="Code5" ColumnName="Code5" />
+                <ScalarProperty Name="Code6" ColumnName="Code6" />
+                <ScalarProperty Name="Value1" ColumnName="Value1" />
+                <ScalarProperty Name="Value2" ColumnName="Value2" />
+                <ScalarProperty Name="Value3" ColumnName="Value3" />
+                <ScalarProperty Name="Value4" ColumnName="Value4" />
+                <ScalarProperty Name="Flag1" ColumnName="Flag1" />
+                <ScalarProperty Name="Flag2" ColumnName="Flag2" />
+                <ScalarProperty Name="Flag3" ColumnName="Flag3" />
+                <ScalarProperty Name="Flag4" ColumnName="Flag4" />
+                <ScalarProperty Name="Timestamp1" ColumnName="Timestamp1" />
+                <ScalarProperty Name="Timestamp2" ColumnName="Timestamp2" />
+                <ScalarProperty Name="Timestamp3" ColumnName="Timestamp3" />
+                <ScalarProperty Name="Timestamp4" ColumnName="Timestamp4" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCategory">
+            <EntityTypeMapping TypeName="testModel.tblCategory">
+              <MappingFragment StoreEntitySet="tblCategory">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code1" ColumnName="Code1" />
+                <ScalarProperty Name="Code2" ColumnName="Code2" />
+                <ScalarProperty Name="Code3" ColumnName="Code3" />
+                <ScalarProperty Name="Code4" ColumnName="Code4" />
+                <ScalarProperty Name="Code5" ColumnName="Code5" />
+                <ScalarProperty Name="Code6" ColumnName="Code6" />
+                <ScalarProperty Name="Value1" ColumnName="Value1" />
+                <ScalarProperty Name="Value2" ColumnName="Value2" />
+                <ScalarProperty Name="Value3" ColumnName="Value3" />
+                <ScalarProperty Name="Value4" ColumnName="Value4" />
+                <ScalarProperty Name="Flag1" ColumnName="Flag1" />
+                <ScalarProperty Name="Flag2" ColumnName="Flag2" />
+                <ScalarProperty Name="Flag3" ColumnName="Flag3" />
+                <ScalarProperty Name="Flag4" ColumnName="Flag4" />
+                <ScalarProperty Name="Timestamp1" ColumnName="Timestamp1" />
+                <ScalarProperty Name="Timestamp2" ColumnName="Timestamp2" />
+                <ScalarProperty Name="Timestamp3" ColumnName="Timestamp3" />
+                <ScalarProperty Name="Timestamp4" ColumnName="Timestamp4" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblCountry">
+            <EntityTypeMapping TypeName="testModel.tblCountry">
+              <MappingFragment StoreEntitySet="tblCountry">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ISO3166_2" ColumnName="ISO3166_2" />
+                <ScalarProperty Name="ISO3166_3" ColumnName="ISO3166_3" />
+                <ScalarProperty Name="DefaultVatId" ColumnName="DefaultVatId" />
+                <ScalarProperty Name="PostalCodeFormat" ColumnName="PostalCodeFormat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRelation">
+            <EntityTypeMapping TypeName="testModel.tblRelation">
+              <MappingFragment StoreEntitySet="tblRelation">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedAt" ColumnName="ModifiedAt" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="IsDisabled" ColumnName="IsDisabled" />
+                <ScalarProperty Name="ParentRelationId" ColumnName="ParentRelationId" />
+                <ScalarProperty Name="IsTemporary" ColumnName="IsTemporary" />
+                <ScalarProperty Name="IsMe" ColumnName="IsMe" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="DepartureName" ColumnName="DepartureName" />
+                <ScalarProperty Name="ArrivalName" ColumnName="ArrivalName" />
+                <ScalarProperty Name="DefaultStreet" ColumnName="DefaultStreet" />
+                <ScalarProperty Name="DefaultPostalCode" ColumnName="DefaultPostalCode" />
+                <ScalarProperty Name="DefaultCity" ColumnName="DefaultCity" />
+                <ScalarProperty Name="DefaultCountry" ColumnName="DefaultCountry" />
+                <ScalarProperty Name="EMailAddress" ColumnName="EMailAddress" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="IMAddress" ColumnName="IMAddress" />
+                <ScalarProperty Name="SkypeAddress" ColumnName="SkypeAddress" />
+                <ScalarProperty Name="TelephoneNumber" ColumnName="TelephoneNumber" />
+                <ScalarProperty Name="MobileNumber" ColumnName="MobileNumber" />
+                <ScalarProperty Name="FaxNumber" ColumnName="FaxNumber" />
+                <ScalarProperty Name="EmergencyNumber" ColumnName="EmergencyNumber" />
+                <ScalarProperty Name="DepartureBetween" ColumnName="DepartureBetween" />
+                <ScalarProperty Name="DepartureBetweenAnd" ColumnName="DepartureBetweenAnd" />
+                <ScalarProperty Name="ArrivalBetween" ColumnName="ArrivalBetween" />
+                <ScalarProperty Name="ArrivalBetweenAnd" ColumnName="ArrivalBetweenAnd" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="CustomerCode" ColumnName="CustomerCode" />
+                <ScalarProperty Name="DebtorNumber" ColumnName="DebtorNumber" />
+                <ScalarProperty Name="VendorNumber" ColumnName="VendorNumber" />
+                <ScalarProperty Name="InvoiceTo" ColumnName="InvoiceTo" />
+                <ScalarProperty Name="InvoiceEMailAddress" ColumnName="InvoiceEMailAddress" />
+                <ScalarProperty Name="SendInvoiceDigital" ColumnName="SendInvoiceDigital" />
+                <ScalarProperty Name="VatId" ColumnName="VatId" />
+                <ScalarProperty Name="VatName" ColumnName="VatName" />
+                <ScalarProperty Name="PaymentTerm" ColumnName="PaymentTerm" />
+                <ScalarProperty Name="PaymentViaAutomaticDebit" ColumnName="PaymentViaAutomaticDebit" />
+                <ScalarProperty Name="VatNumber" ColumnName="VatNumber" />
+                <ScalarProperty Name="ChamberOfCommerce" ColumnName="ChamberOfCommerce" />
+                <ScalarProperty Name="BankName" ColumnName="BankName" />
+                <ScalarProperty Name="BankAccount" ColumnName="BankAccount" />
+                <ScalarProperty Name="BankBic" ColumnName="BankBic" />
+                <ScalarProperty Name="CalculateMinimalPrice" ColumnName="CalculateMinimalPrice" />
+                <ScalarProperty Name="CalculatePriceManually" ColumnName="CalculatePriceManually" />
+                <ScalarProperty Name="CalculatePriceByPriceList" ColumnName="CalculatePriceByPriceList" />
+                <ScalarProperty Name="PriceListId" ColumnName="PriceListId" />
+                <ScalarProperty Name="PriceListName" ColumnName="PriceListName" />
+                <ScalarProperty Name="CalculatePriceBasedOnPositions" ColumnName="CalculatePriceBasedOnPositions" />
+                <ScalarProperty Name="CalculatePriceBasedOnAmount" ColumnName="CalculatePriceBasedOnAmount" />
+                <ScalarProperty Name="CalculatePriceBasedOnWeight" ColumnName="CalculatePriceBasedOnWeight" />
+                <ScalarProperty Name="CalculatePriceBasedOnDistance" ColumnName="CalculatePriceBasedOnDistance" />
+                <ScalarProperty Name="CalculatePriceBasedOnTonne" ColumnName="CalculatePriceBasedOnTonne" />
+                <ScalarProperty Name="CalculatePriceByFixed" ColumnName="CalculatePriceByFixed" />
+                <ScalarProperty Name="CalculatePriceByDistance" ColumnName="CalculatePriceByDistance" />
+                <ScalarProperty Name="CalculatePriceBasedOnEpq" ColumnName="CalculatePriceBasedOnEpq" />
+                <ScalarProperty Name="CalculatePriceBasedOnLoadingMeters" ColumnName="CalculatePriceBasedOnLoadingMeters" />
+                <ScalarProperty Name="CalculatePriceBasedOnVolume" ColumnName="CalculatePriceBasedOnVolume" />
+                <ScalarProperty Name="CalculatePriceByFixedPrice" ColumnName="CalculatePriceByFixedPrice" />
+                <ScalarProperty Name="CalculateMinimalPriceForCollecting" ColumnName="CalculateMinimalPriceForCollecting" />
+                <ScalarProperty Name="CalculatePriceManuallyForCollecting" ColumnName="CalculatePriceManuallyForCollecting" />
+                <ScalarProperty Name="CalculatePriceByPriceListForCollecting" ColumnName="CalculatePriceByPriceListForCollecting" />
+                <ScalarProperty Name="PriceListIdForCollecting" ColumnName="PriceListIdForCollecting" />
+                <ScalarProperty Name="PriceListNameForCollecting" ColumnName="PriceListNameForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnPositionsForCollecting" ColumnName="CalculatePriceBasedOnPositionsForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnAmountForCollecting" ColumnName="CalculatePriceBasedOnAmountForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnWeightForCollecting" ColumnName="CalculatePriceBasedOnWeightForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnDistanceForCollecting" ColumnName="CalculatePriceBasedOnDistanceForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnTonneForCollecting" ColumnName="CalculatePriceBasedOnTonneForCollecting" />
+                <ScalarProperty Name="CalculatePriceByFixedForCollecting" ColumnName="CalculatePriceByFixedForCollecting" />
+                <ScalarProperty Name="CalculatePriceByDistanceForCollecting" ColumnName="CalculatePriceByDistanceForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnEpqForCollecting" ColumnName="CalculatePriceBasedOnEpqForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnLoadingMetersForCollecting" ColumnName="CalculatePriceBasedOnLoadingMetersForCollecting" />
+                <ScalarProperty Name="CalculatePriceBasedOnVolumeForCollecting" ColumnName="CalculatePriceBasedOnVolumeForCollecting" />
+                <ScalarProperty Name="CalculatePriceByFixedPriceForCollecting" ColumnName="CalculatePriceByFixedPriceForCollecting" />
+                <ScalarProperty Name="GeographicalRegions" ColumnName="GeographicalRegions" />
+                <ScalarProperty Name="SendDigitalFreightDocumentsByEMail" ColumnName="SendDigitalFreightDocumentsByEMail" />
+                <ScalarProperty Name="DigitalFreightDocumentEMailTemplateId" ColumnName="DigitalFreightDocumentEMailTemplateId" />
+                <ScalarProperty Name="SendFreightStatusUpdateByEMail" ColumnName="SendFreightStatusUpdateByEMail" />
+                <ScalarProperty Name="DepartureTimeSlotsAreAllEqual" ColumnName="DepartureTimeSlotsAreAllEqual" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnSundays" ColumnName="DepartureTimeSlotIdOnSundays" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnMondays" ColumnName="DepartureTimeSlotIdOnMondays" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnTuesdays" ColumnName="DepartureTimeSlotIdOnTuesdays" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnWednesdays" ColumnName="DepartureTimeSlotIdOnWednesdays" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnThursdays" ColumnName="DepartureTimeSlotIdOnThursdays" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnFridays" ColumnName="DepartureTimeSlotIdOnFridays" />
+                <ScalarProperty Name="DepartureTimeSlotIdOnSaturdays" ColumnName="DepartureTimeSlotIdOnSaturdays" />
+                <ScalarProperty Name="ArrivalTimeSlotsAreAllEqual" ColumnName="ArrivalTimeSlotsAreAllEqual" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnSundays" ColumnName="ArrivalTimeSlotIdOnSundays" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnMondays" ColumnName="ArrivalTimeSlotIdOnMondays" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnTuesdays" ColumnName="ArrivalTimeSlotIdOnTuesdays" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnWednesdays" ColumnName="ArrivalTimeSlotIdOnWednesdays" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnThursdays" ColumnName="ArrivalTimeSlotIdOnThursdays" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnFridays" ColumnName="ArrivalTimeSlotIdOnFridays" />
+                <ScalarProperty Name="ArrivalTimeSlotIdOnSaturdays" ColumnName="ArrivalTimeSlotIdOnSaturdays" />
+                <ScalarProperty Name="InvoiceDateGenerationOptions" ColumnName="InvoiceDateGenerationOptions" />
+                <ScalarProperty Name="InvoiceGroupByOptions" ColumnName="InvoiceGroupByOptions" />
+                <ScalarProperty Name="InvoiceGroupByTransportOrderColumnName" ColumnName="InvoiceGroupByTransportOrderColumnName" />
+                <ScalarProperty Name="GeneralLedgerAccount" ColumnName="GeneralLedgerAccount" />
+                <ScalarProperty Name="TransportUnitTransactionOverviewTextTemplateId" ColumnName="TransportUnitTransactionOverviewTextTemplateId" />
+                <ScalarProperty Name="SendFreightDocumentsAlongWithInvoice" ColumnName="SendFreightDocumentsAlongWithInvoice" />
+                <ScalarProperty Name="CarrierCode" ColumnName="CarrierCode" />
+                <ScalarProperty Name="SupplyNumber" ColumnName="SupplyNumber" />
+                <ScalarProperty Name="ThirdPartyToUseForInvoicing" ColumnName="ThirdPartyToUseForInvoicing" />
+                <ScalarProperty Name="Flags" ColumnName="Flags" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRelationAddress">
+            <EntityTypeMapping TypeName="testModel.tblRelationAddress">
+              <MappingFragment StoreEntitySet="tblRelationAddress">
+                <ScalarProperty Name="RelationId" ColumnName="RelationId" />
+                <ScalarProperty Name="AddressTypeId" ColumnName="AddressTypeId" />
+                <ScalarProperty Name="Street" ColumnName="Street" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="NumberSuffix" ColumnName="NumberSuffix" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Province" ColumnName="Province" />
+                <ScalarProperty Name="Building" ColumnName="Building" />
+                <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
+                <ScalarProperty Name="CountryId" ColumnName="CountryId" />
+                <ScalarProperty Name="CountryName" ColumnName="CountryName" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblRelationCategory">
+            <EntityTypeMapping TypeName="testModel.tblRelationCategory">
+              <MappingFragment StoreEntitySet="tblRelationCategory">
+                <ScalarProperty Name="RelationId" ColumnName="RelationId" />
+                <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
