@@ -224,6 +224,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\tblRelationsController.cs" />
     <Compile Include="Domain.Models\Relation.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -239,6 +240,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Relation.tt</DependentUpon>
     </Compile>
+    <Compile Include="Domain.Models\RelationModel.cs" />
     <Compile Include="Domain.Models\tblAddressType.cs">
       <DependentUpon>Relation.tt</DependentUpon>
     </Compile>
@@ -329,6 +331,11 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\RelationView.cshtml" />
+    <Content Include="Views\tblRelations\Create.cshtml" />
+    <Content Include="Views\tblRelations\Delete.cshtml" />
+    <Content Include="Views\tblRelations\Details.cshtml" />
+    <Content Include="Views\tblRelations\Edit.cshtml" />
+    <Content Include="Views\tblRelations\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

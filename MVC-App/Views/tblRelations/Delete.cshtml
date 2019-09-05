@@ -1,0 +1,873 @@
+﻿@model MVC_App.Domain.Models.tblRelation
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>tblRelation</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CreatedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedAt)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedAt)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ModifiedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ModifiedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsDisabled)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsDisabled)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ParentRelationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ParentRelationId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsTemporary)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsTemporary)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsMe)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsMe)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultStreet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultStreet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultPostalCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultPostalCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultCity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DefaultCountry)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DefaultCountry)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EMailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EMailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IMAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IMAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SkypeAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SkypeAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TelephoneNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TelephoneNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MobileNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MobileNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FaxNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FaxNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EmergencyNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmergencyNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureBetween)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureBetween)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureBetweenAnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureBetweenAnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalBetween)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalBetween)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalBetweenAnd)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalBetweenAnd)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Remarks)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Remarks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DebtorNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DebtorNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VendorNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VendorNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceTo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceTo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceEMailAddress)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceEMailAddress)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendInvoiceDigital)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendInvoiceDigital)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VatId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VatId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VatName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VatName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentTerm)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentTerm)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentViaAutomaticDebit)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentViaAutomaticDebit)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.VatNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.VatNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ChamberOfCommerce)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ChamberOfCommerce)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankAccount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankAccount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BankBic)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BankBic)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculateMinimalPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculateMinimalPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceManually)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceManually)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByPriceList)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByPriceList)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceListId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceListId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceListName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceListName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnPositions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnPositions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnAmount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnAmount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnWeight)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnWeight)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnDistance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnDistance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnTonne)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnTonne)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByFixed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByFixed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByDistance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByDistance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnEpq)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnEpq)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnLoadingMeters)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnLoadingMeters)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnVolume)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnVolume)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByFixedPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByFixedPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculateMinimalPriceForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculateMinimalPriceForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceManuallyForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceManuallyForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByPriceListForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByPriceListForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceListIdForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceListIdForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriceListNameForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriceListNameForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnPositionsForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnPositionsForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnAmountForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnAmountForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnWeightForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnWeightForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnDistanceForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnDistanceForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnTonneForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnTonneForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByFixedForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByFixedForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByDistanceForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByDistanceForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnEpqForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnEpqForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnLoadingMetersForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnLoadingMetersForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceBasedOnVolumeForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceBasedOnVolumeForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CalculatePriceByFixedPriceForCollecting)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CalculatePriceByFixedPriceForCollecting)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GeographicalRegions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GeographicalRegions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendDigitalFreightDocumentsByEMail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendDigitalFreightDocumentsByEMail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DigitalFreightDocumentEMailTemplateId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DigitalFreightDocumentEMailTemplateId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendFreightStatusUpdateByEMail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendFreightStatusUpdateByEMail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotsAreAllEqual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotsAreAllEqual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnSundays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnSundays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnMondays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnMondays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnTuesdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnTuesdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnWednesdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnWednesdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnThursdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnThursdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnFridays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnFridays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepartureTimeSlotIdOnSaturdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DepartureTimeSlotIdOnSaturdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotsAreAllEqual)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotsAreAllEqual)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnSundays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnSundays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnMondays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnMondays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnTuesdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnTuesdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnWednesdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnWednesdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnThursdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnThursdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnFridays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnFridays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalTimeSlotIdOnSaturdays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ArrivalTimeSlotIdOnSaturdays)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceDateGenerationOptions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceDateGenerationOptions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceGroupByOptions)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceGroupByOptions)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.InvoiceGroupByTransportOrderColumnName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.InvoiceGroupByTransportOrderColumnName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.GeneralLedgerAccount)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.GeneralLedgerAccount)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TransportUnitTransactionOverviewTextTemplateId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TransportUnitTransactionOverviewTextTemplateId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendFreightDocumentsAlongWithInvoice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendFreightDocumentsAlongWithInvoice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CarrierCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CarrierCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SupplyNumber)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SupplyNumber)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ThirdPartyToUseForInvoicing)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ThirdPartyToUseForInvoicing)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Flags)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Flags)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>
