@@ -11,15 +11,13 @@ using MVC_App.Domain.Models;
 
 namespace MVC_App.Controllers
 {
-    public class tblRelationsController : Controller
+    public class RelationsController : Controller
     {
-        private testEntities db = new testEntities();
+        private testEntities db;
 
-        private IEnumerable<RelationModel> relationModels;
-
-        public tblRelationsController()
+        private async Task<List<RelationModel>> InitRelationModels()
         {
-            var relations = from tblRelation in db.tblRelation
+            var relationModels = from tblRelation in db.tblRelation
                             join tblRelationAddress in db.tblRelationAddress on tblRelation.Id equals tblRelationAddress.RelationId
                             where tblRelation.IsDisabled != true
                             select new RelationModel
@@ -36,12 +34,15 @@ namespace MVC_App.Controllers
                                 PostalCode = tblRelationAddress.PostalCode,
                                 StreetNumber = tblRelationAddress.Number ?? 0
                             };
-            relationModels = relations.ToList();
+
+            return await relationModels.ToListAsync();
         }
 
         // GET: tblRelations
         public async Task<ActionResult> Index()
         {
+            var relationModels = await InitRelationModels();
+
             return View(relationModels);
         }
 
@@ -52,11 +53,14 @@ namespace MVC_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+
             if (tblRelation == null)
             {
                 return HttpNotFound();
             }
+
             return View(tblRelation);
         }
 
@@ -75,9 +79,9 @@ namespace MVC_App.Controllers
         {
             if (ModelState.IsValid)
             {
-                relationModel.Id = Guid.NewGuid();
-                db.tblRelation.Add(new tblRelation {
-                    Id = relationModel.Id,
+                var relation = new tblRelation
+                {
+                    Id = Guid.NewGuid(),
                     Name = relationModel.Name,
                     FullName = relationModel.FullName,
                     TelephoneNumber = relationModel.TelephoneNumber,
@@ -90,8 +94,11 @@ namespace MVC_App.Controllers
                     PaymentViaAutomaticDebit = false,
                     InvoiceDateGenerationOptions = 0,
                     InvoiceGroupByOptions = 0
-                });
-                db.tblRelationAddress.Add(new tblRelationAddress
+                };
+
+                db.tblRelation.Add(relation);
+
+                var relationAddress = new tblRelationAddress
                 {
                     Id = Guid.NewGuid(),
                     RelationId = relationModel.Id,
@@ -101,8 +108,12 @@ namespace MVC_App.Controllers
                     PostalCode = relationModel.PostalCode,
                     Number = relationModel.StreetNumber,
                     AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
-                });
+                };
+
+                db.tblRelationAddress.Add(relationAddress);
+
                 await db.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
 
@@ -116,12 +127,16 @@ namespace MVC_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+
+            var tblRelation = await db.tblRelation.FindAsync(id);
 
             if (tblRelation == null)
             {
                 return HttpNotFound();
             }
+
+            var relationModels = await InitRelationModels();
+
             return View(relationModels.First(r => r.Id == tblRelation.Id));
         }
 
@@ -135,20 +150,34 @@ namespace MVC_App.Controllers
             if (ModelState.IsValid)
             {
                 tblRelation tblRelation = await db.tblRelation.FindAsync(relationModel.Id);
+
                 tblRelation.Name = relationModel.Name;
+
                 tblRelation.FullName = relationModel.FullName;
+
                 tblRelation.EMailAddress = relationModel.Email;
+
                 tblRelation.TelephoneNumber = relationModel.TelephoneNumber;
+
                 tblRelationAddress tblRelationAddress = await db.tblRelationAddress.FindAsync(relationModel.RelationAddressId);
+
                 tblRelationAddress.CountryName = relationModel.Country;
+
                 tblRelationAddress.City = relationModel.City;
+
                 tblRelationAddress.Street = relationModel.Street;
+                
                 //TODO: PostalCode mask
                 tblRelationAddress.PostalCode = relationModel.PostalCode;
+
                 tblRelationAddress.Number = relationModel.StreetNumber;
+
                 db.Entry(tblRelation).State = EntityState.Modified;
+
                 db.Entry(tblRelationAddress).State = EntityState.Modified;
+
                 await db.SaveChangesAsync();
+
                 return RedirectToAction("Index");
             }
             return View(relationModel);
@@ -175,9 +204,12 @@ namespace MVC_App.Controllers
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+            
             //no removing, checking IsDisabled only
             tblRelation.IsDisabled = true;
+
             await db.SaveChangesAsync();
+
             return RedirectToAction("Index");
         }
 

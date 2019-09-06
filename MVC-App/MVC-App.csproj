@@ -224,7 +224,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\tblRelationsController.cs" />
+    <Compile Include="Controllers\RelationsController.cs" />
     <Compile Include="Domain.Models\Relation.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -330,7 +330,6 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\RelationView.cshtml" />
     <Content Include="Views\tblRelations\Create.cshtml" />
     <Content Include="Views\tblRelations\Delete.cshtml" />
     <Content Include="Views\tblRelations\Details.cshtml" />

@@ -29,21 +29,5 @@ namespace MVC_App.Controllers
 
             return View();
         }
-
-        public ActionResult RelationView()
-        {
-            //using (testEntities db = new testEntities())
-            //{
-            //    //tblRelation relation = db.tblRelation.Where(p => Int32.Parse(p.Id.ToString()) == id).FirstOrDefault();
-            //    return View(db.tblRelation);
-            //}
-            return View(db.tblRelation);
-        }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    db.Dispose();
-        //    base.Dispose(disposing);
-        //}
     }
 }
