@@ -25,6 +25,7 @@ namespace MVC_App.Controllers
                             select new RelationModel
                             {
                                 Id = tblRelation.Id,
+                                RelationAddressId = tblRelationAddress.Id,
                                 Name = tblRelation.Name,
                                 FullName = tblRelation.FullName,
                                 TelephoneNumber = tblRelation.TelephoneNumber,
@@ -70,7 +71,7 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
         {
             if (ModelState.IsValid)
             {
@@ -129,11 +130,24 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
         {
             if (ModelState.IsValid)
             {
-                //db.Entry(tblRelation).State = EntityState.Modified;
+                tblRelation tblRelation = await db.tblRelation.FindAsync(relationModel.Id);
+                tblRelation.Name = relationModel.Name;
+                tblRelation.FullName = relationModel.FullName;
+                tblRelation.EMailAddress = relationModel.Email;
+                tblRelation.TelephoneNumber = relationModel.TelephoneNumber;
+                tblRelationAddress tblRelationAddress = await db.tblRelationAddress.FindAsync(relationModel.RelationAddressId);
+                tblRelationAddress.CountryName = relationModel.Country;
+                tblRelationAddress.City = relationModel.City;
+                tblRelationAddress.Street = relationModel.Street;
+                //TODO: PostalCode mask
+                tblRelationAddress.PostalCode = relationModel.PostalCode;
+                tblRelationAddress.Number = relationModel.StreetNumber;
+                db.Entry(tblRelation).State = EntityState.Modified;
+                db.Entry(tblRelationAddress).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }

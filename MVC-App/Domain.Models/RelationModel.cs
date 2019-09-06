@@ -9,6 +9,8 @@ namespace MVC_App.Domain.Models
     {
         public Guid Id { get; set; }
 
+        public Guid RelationAddressId { get; set; }
+
         public bool IsDisabled { get; set; }
 
         public string Name { get; set; }
