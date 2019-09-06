@@ -13,7 +13,7 @@ namespace MVC_App.Controllers
 {
     public class RelationsController : Controller
     {
-        private testEntities db;
+        private testEntities db = new testEntities();
 
         private async Task<List<RelationModel>> InitRelationModels()
         {
