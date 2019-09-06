@@ -15,26 +15,33 @@ namespace MVC_App.Controllers
     {
         private testEntities db = new testEntities();
 
-        // GET: tblRelations
-        public async Task<ActionResult> Index()
+        private IEnumerable<RelationModel> relationModels;
+
+        public tblRelationsController()
         {
             var relations = from tblRelation in db.tblRelation
                             join tblRelationAddress in db.tblRelationAddress on tblRelation.Id equals tblRelationAddress.RelationId
-                select new RelationModel
-                {
-                    Id = tblRelation.Id,
-                    Name = tblRelation.Name,
-                    FullName = tblRelation.FullName,
-                    TelephoneNumber = tblRelation.TelephoneNumber,
-                    Email = tblRelation.EMailAddress,
-                    Country = tblRelationAddress.CountryName,
-                    City = tblRelationAddress.City,
-                    Street = tblRelationAddress.Street,
-                    PostalCode = tblRelationAddress.PostalCode,
-                    StreetNumber = tblRelationAddress.Number??0
-                };
-            
-            return View(await relations.ToListAsync());
+                            where tblRelation.IsDisabled != true
+                            select new RelationModel
+                            {
+                                Id = tblRelation.Id,
+                                Name = tblRelation.Name,
+                                FullName = tblRelation.FullName,
+                                TelephoneNumber = tblRelation.TelephoneNumber,
+                                Email = tblRelation.EMailAddress,
+                                Country = tblRelationAddress.CountryName,
+                                City = tblRelationAddress.City,
+                                Street = tblRelationAddress.Street,
+                                PostalCode = tblRelationAddress.PostalCode,
+                                StreetNumber = tblRelationAddress.Number ?? 0
+                            };
+            relationModels = relations.ToList();
+        }
+
+        // GET: tblRelations
+        public async Task<ActionResult> Index()
+        {
+            return View(relationModels);
         }
 
         // GET: tblRelations/Details/5
@@ -63,17 +70,42 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,CreatedAt,CreatedBy,ModifiedAt,ModifiedBy,IsDisabled,ParentRelationId,IsTemporary,IsMe,Name,FullName,DepartureName,ArrivalName,DefaultStreet,DefaultPostalCode,DefaultCity,DefaultCountry,EMailAddress,Url,IMAddress,SkypeAddress,TelephoneNumber,MobileNumber,FaxNumber,EmergencyNumber,DepartureBetween,DepartureBetweenAnd,ArrivalBetween,ArrivalBetweenAnd,Remarks,CustomerCode,DebtorNumber,VendorNumber,InvoiceTo,InvoiceEMailAddress,SendInvoiceDigital,VatId,VatName,PaymentTerm,PaymentViaAutomaticDebit,VatNumber,ChamberOfCommerce,BankName,BankAccount,BankBic,CalculateMinimalPrice,CalculatePriceManually,CalculatePriceByPriceList,PriceListId,PriceListName,CalculatePriceBasedOnPositions,CalculatePriceBasedOnAmount,CalculatePriceBasedOnWeight,CalculatePriceBasedOnDistance,CalculatePriceBasedOnTonne,CalculatePriceByFixed,CalculatePriceByDistance,CalculatePriceBasedOnEpq,CalculatePriceBasedOnLoadingMeters,CalculatePriceBasedOnVolume,CalculatePriceByFixedPrice,CalculateMinimalPriceForCollecting,CalculatePriceManuallyForCollecting,CalculatePriceByPriceListForCollecting,PriceListIdForCollecting,PriceListNameForCollecting,CalculatePriceBasedOnPositionsForCollecting,CalculatePriceBasedOnAmountForCollecting,CalculatePriceBasedOnWeightForCollecting,CalculatePriceBasedOnDistanceForCollecting,CalculatePriceBasedOnTonneForCollecting,CalculatePriceByFixedForCollecting,CalculatePriceByDistanceForCollecting,CalculatePriceBasedOnEpqForCollecting,CalculatePriceBasedOnLoadingMetersForCollecting,CalculatePriceBasedOnVolumeForCollecting,CalculatePriceByFixedPriceForCollecting,GeographicalRegions,SendDigitalFreightDocumentsByEMail,DigitalFreightDocumentEMailTemplateId,SendFreightStatusUpdateByEMail,DepartureTimeSlotsAreAllEqual,DepartureTimeSlotIdOnSundays,DepartureTimeSlotIdOnMondays,DepartureTimeSlotIdOnTuesdays,DepartureTimeSlotIdOnWednesdays,DepartureTimeSlotIdOnThursdays,DepartureTimeSlotIdOnFridays,DepartureTimeSlotIdOnSaturdays,ArrivalTimeSlotsAreAllEqual,ArrivalTimeSlotIdOnSundays,ArrivalTimeSlotIdOnMondays,ArrivalTimeSlotIdOnTuesdays,ArrivalTimeSlotIdOnWednesdays,ArrivalTimeSlotIdOnThursdays,ArrivalTimeSlotIdOnFridays,ArrivalTimeSlotIdOnSaturdays,InvoiceDateGenerationOptions,InvoiceGroupByOptions,InvoiceGroupByTransportOrderColumnName,GeneralLedgerAccount,TransportUnitTransactionOverviewTextTemplateId,SendFreightDocumentsAlongWithInvoice,CarrierCode,SupplyNumber,ThirdPartyToUseForInvoicing,Flags")] tblRelation tblRelation)
+        public async Task<ActionResult> Create([Bind(Include = "Id,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
         {
             if (ModelState.IsValid)
             {
-                tblRelation.Id = Guid.NewGuid();
-                db.tblRelation.Add(tblRelation);
+                relationModel.Id = Guid.NewGuid();
+                db.tblRelation.Add(new tblRelation {
+                    Id = relationModel.Id,
+                    Name = relationModel.Name,
+                    FullName = relationModel.FullName,
+                    TelephoneNumber = relationModel.TelephoneNumber,
+                    EMailAddress = relationModel.Email,
+                    CreatedAt = DateTime.Now,
+                    CreatedBy = "admin",
+                    IsDisabled = false,
+                    IsTemporary = false,
+                    IsMe = false,
+                    PaymentViaAutomaticDebit = false,
+                    InvoiceDateGenerationOptions = 0,
+                    InvoiceGroupByOptions = 0
+                });
+                db.tblRelationAddress.Add(new tblRelationAddress
+                {
+                    Id = Guid.NewGuid(),
+                    RelationId = relationModel.Id,
+                    CountryName = relationModel.Country,
+                    City = relationModel.City,
+                    Street = relationModel.Street,
+                    PostalCode = relationModel.PostalCode,
+                    Number = relationModel.StreetNumber,
+                    AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
+                });
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
 
-            return View(tblRelation);
+            return View(relationModel);
         }
 
         // GET: tblRelations/Edit/5
@@ -84,11 +116,12 @@ namespace MVC_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+
             if (tblRelation == null)
             {
                 return HttpNotFound();
             }
-            return View(tblRelation);
+            return View(relationModels.First(r => r.Id == tblRelation.Id));
         }
 
         // POST: tblRelations/Edit/5
@@ -96,15 +129,15 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Name,FullName,EMailAddress,TelephoneNumber")] tblRelation tblRelation)
+        public async Task<ActionResult> Edit([Bind(Include = "Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(tblRelation).State = EntityState.Modified;
+                //db.Entry(tblRelation).State = EntityState.Modified;
                 await db.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(tblRelation);
+            return View(relationModel);
         }
 
         // GET: tblRelations/Delete/5
@@ -128,8 +161,8 @@ namespace MVC_App.Controllers
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
             tblRelation tblRelation = await db.tblRelation.FindAsync(id);
-            //TODO: no removing, checking IsDisabled only
-            db.tblRelation.Remove(tblRelation);
+            //no removing, checking IsDisabled only
+            tblRelation.IsDisabled = true;
             await db.SaveChangesAsync();
             return RedirectToAction("Index");
         }
