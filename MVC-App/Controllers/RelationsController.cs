@@ -15,15 +15,31 @@ namespace MVC_App.Controllers
     {
         private testEntities db = new testEntities();
 
-        private async Task<List<RelationModel>> InitRelationModels()
+        private SelectList categoryFilter;
+
+        private async Task<List<RelationViewModel>> InitRelationModels()
         {
+            var categories = db.tblCategory.ToList();
+
+            categories.Insert(0, new tblCategory
+            {
+                Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                CreatedAt = DateTime.Now,
+                CreatedBy = "admin",
+                IsDisabled = false,
+                Name = "Все"
+            });
+
+            categoryFilter = new SelectList(categories, "Id", "Name");
+
             var relationModels = from tblRelation in db.tblRelation
                             join tblRelationAddress in db.tblRelationAddress on tblRelation.Id equals tblRelationAddress.RelationId
                             where tblRelation.IsDisabled != true
-                            select new RelationModel
+                            select new RelationViewModel
                             {
                                 Id = tblRelation.Id,
                                 RelationAddressId = tblRelationAddress.Id,
+                                Categories = (from tblRelationCategory in db.tblRelationCategory where tblRelationCategory.RelationId == tblRelation.Id select tblRelationCategory.CategoryId).ToList(),
                                 Name = tblRelation.Name,
                                 FullName = tblRelation.FullName,
                                 TelephoneNumber = tblRelation.TelephoneNumber,
@@ -34,16 +50,20 @@ namespace MVC_App.Controllers
                                 PostalCode = tblRelationAddress.PostalCode,
                                 StreetNumber = tblRelationAddress.Number ?? 0
                             };
-
             return await relationModels.ToListAsync();
         }
 
         // GET: tblRelations
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(Guid? categoryId)
         {
             var relationModels = await InitRelationModels();
 
-            return View(relationModels);
+            if(categoryId != null && categoryId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            {
+                relationModels = relationModels.Where(p => p.Categories.Contains(categoryId.Value)).ToList();
+            }
+
+            return View(new RelationListViewModel { RelationViewModels = relationModels, Categories = categoryFilter });
         }
 
         // GET: tblRelations/Details/5
@@ -75,7 +95,7 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
         {
             if (ModelState.IsValid)
             {
@@ -145,7 +165,7 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationModel relationModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
         {
             if (ModelState.IsValid)
             {
