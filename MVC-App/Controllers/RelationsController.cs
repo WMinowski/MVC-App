@@ -34,6 +34,7 @@ namespace MVC_App.Controllers
 
             var relationModels = from tblRelation in db.tblRelation
                             join tblRelationAddress in db.tblRelationAddress on tblRelation.Id equals tblRelationAddress.RelationId
+                            join tblCountry in db.tblCountry on tblRelationAddress.CountryId equals tblCountry.Id
                             where tblRelation.IsDisabled != true
                             select new RelationViewModel
                             {
@@ -44,26 +45,100 @@ namespace MVC_App.Controllers
                                 FullName = tblRelation.FullName,
                                 TelephoneNumber = tblRelation.TelephoneNumber,
                                 Email = tblRelation.EMailAddress,
-                                Country = tblRelationAddress.CountryName,
+                                CountryId = tblCountry.Id,
+                                CountryName = tblCountry.Name,
                                 City = tblRelationAddress.City,
                                 Street = tblRelationAddress.Street,
                                 PostalCode = tblRelationAddress.PostalCode,
+                                PostalCodeMask = tblCountry.PostalCodeFormat,
                                 StreetNumber = tblRelationAddress.Number ?? 0
                             };
             return await relationModels.ToListAsync();
         }
 
+        private string ApplyMask(string value, string mask)
+        {
+            if (mask == string.Empty||mask == null) return value;
+
+            List<char> result = new List<char>();
+
+            int valueIterator = 0;
+
+            for (int i = 0; i < mask.Length-1; i++)
+            {
+                switch (mask[i])
+                {
+                    case 'N':
+                        {
+                            if (char.IsDigit(value[valueIterator]))
+                            {
+                                result.Add(value[valueIterator]);
+
+                                valueIterator++;
+                            }
+                            else return value;
+
+                            break;
+                        }
+                    case 'L':
+                        {
+                            if (char.IsLetter(value[valueIterator]))
+                            {
+                                result.Add(char.ToUpper(value[valueIterator]));
+
+                                valueIterator++;
+                            }
+                            else return value;
+
+                            break;
+                        }
+                    case 'l':
+                        {
+                            if (char.IsLetter(value[valueIterator]))
+                            {
+                                result.Add(char.ToLower(value[valueIterator]));
+
+                                valueIterator++;
+                            }
+                            else return value;
+
+                            break;
+                        }
+                    default:
+                        {
+                            result.Add(mask[i]);
+                            if (!char.IsLetterOrDigit(value[valueIterator]))
+                            {
+                                if (value[valueIterator] == mask[i])
+                                {
+                                    valueIterator++;
+                                }
+                                else return value;
+                            }
+                            break;
+                        }
+                }
+            }
+            if (value.Length - 1 == valueIterator)
+            {
+                return new string(result.ToArray());
+            }
+            else return value;
+        }
+
         // GET: tblRelations
         public async Task<ActionResult> Index(Guid? categoryId)
         {
+            var countries = db.tblCountry.ToList();
+
             var relationModels = await InitRelationModels();
 
-            if(categoryId != null && categoryId != Guid.Parse("00000000-0000-0000-0000-000000000000"))
+            if(categoryId != null && categoryId != Guid.Empty)
             {
                 relationModels = relationModels.Where(p => p.Categories.Contains(categoryId.Value)).ToList();
             }
 
-            return View(new RelationListViewModel { RelationViewModels = relationModels, Categories = categoryFilter });
+            return View(new RelationListViewModel { RelationViewModels = relationModels, Categories = categoryFilter, Countries = countries });
         }
 
         // GET: tblRelations/Details/5
@@ -87,6 +162,8 @@ namespace MVC_App.Controllers
         // GET: tblRelations/Create
         public ActionResult Create()
         {
+            ViewBag.Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name");
+
             return View();
         }
 
@@ -95,7 +172,7 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
+        public async Task<ActionResult> Create([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,CountryId,CountryName,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
         {
             if (ModelState.IsValid)
             {
@@ -121,11 +198,11 @@ namespace MVC_App.Controllers
                 var relationAddress = new tblRelationAddress
                 {
                     Id = Guid.NewGuid(),
-                    RelationId = relationModel.Id,
-                    CountryName = relationModel.Country,
+                    RelationId = relation.Id,
+                    CountryId = relationModel.CountryId,
                     City = relationModel.City,
                     Street = relationModel.Street,
-                    PostalCode = relationModel.PostalCode,
+                    PostalCode = ApplyMask(relationModel.PostalCode, relationModel.PostalCodeMask),
                     Number = relationModel.StreetNumber,
                     AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
                 };
@@ -143,6 +220,8 @@ namespace MVC_App.Controllers
         // GET: tblRelations/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
+            ViewBag.Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -165,8 +244,9 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,Country,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,CountryId,CountryName,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
         {
+
             if (ModelState.IsValid)
             {
                 tblRelation tblRelation = await db.tblRelation.FindAsync(relationModel.Id);
@@ -181,14 +261,13 @@ namespace MVC_App.Controllers
 
                 tblRelationAddress tblRelationAddress = await db.tblRelationAddress.FindAsync(relationModel.RelationAddressId);
 
-                tblRelationAddress.CountryName = relationModel.Country;
+                tblRelationAddress.CountryId = relationModel.CountryId;
 
                 tblRelationAddress.City = relationModel.City;
 
                 tblRelationAddress.Street = relationModel.Street;
                 
-                //TODO: PostalCode mask
-                tblRelationAddress.PostalCode = relationModel.PostalCode;
+                tblRelationAddress.PostalCode = ApplyMask(relationModel.PostalCode, relationModel.PostalCodeMask);
 
                 tblRelationAddress.Number = relationModel.StreetNumber;
 
@@ -210,11 +289,14 @@ namespace MVC_App.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
             tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+
             if (tblRelation == null)
             {
                 return HttpNotFound();
             }
+
             return View(tblRelation);
         }
 
