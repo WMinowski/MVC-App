@@ -240,7 +240,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Relation.tt</DependentUpon>
     </Compile>
-    <Compile Include="Domain.Models\RelationModel.cs" />
+    <Compile Include="Domain.Models\RelationListViewModel.cs" />
+    <Compile Include="Domain.Models\RelationViewModel.cs" />
     <Compile Include="Domain.Models\tblAddressType.cs">
       <DependentUpon>Relation.tt</DependentUpon>
     </Compile>
@@ -263,13 +264,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Relation.aspx.cs">
-      <DependentUpon>Relation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Relation.aspx.designer.cs">
-      <DependentUpon>Relation.aspx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\test.mdf" />
@@ -294,10 +288,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Relation.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="appsettings.json" />
     <EntityDeploy Include="Domain.Models\Relation.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>Relation.Designer.cs</LastGenOutput>
