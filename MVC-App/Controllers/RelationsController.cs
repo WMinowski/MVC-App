@@ -64,7 +64,7 @@ namespace MVC_App.Controllers
 
             int valueIterator = 0;
 
-            for (int i = 0; i < mask.Length-1; i++)
+            for (int i = 0; i < mask.Length; i++)
             {
                 switch (mask[i])
                 {
@@ -119,7 +119,7 @@ namespace MVC_App.Controllers
                         }
                 }
             }
-            if (value.Length - 1 == valueIterator)
+            if (value.Length == valueIterator)
             {
                 return new string(result.ToArray());
             }
@@ -202,7 +202,7 @@ namespace MVC_App.Controllers
                     CountryId = relationModel.CountryId,
                     City = relationModel.City,
                     Street = relationModel.Street,
-                    PostalCode = ApplyMask(relationModel.PostalCode, relationModel.PostalCodeMask),
+                    PostalCode = ApplyMask(relationModel.PostalCode, db.tblCountry.Find(relationModel.CountryId).PostalCodeFormat),
                     Number = relationModel.StreetNumber,
                     AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
                 };
@@ -267,7 +267,7 @@ namespace MVC_App.Controllers
 
                 tblRelationAddress.Street = relationModel.Street;
                 
-                tblRelationAddress.PostalCode = ApplyMask(relationModel.PostalCode, relationModel.PostalCodeMask);
+                tblRelationAddress.PostalCode = ApplyMask(relationModel.PostalCode, db.tblCountry.Find(relationModel.CountryId).PostalCodeFormat);
 
                 tblRelationAddress.Number = relationModel.StreetNumber;
 
