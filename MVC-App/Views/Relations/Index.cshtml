@@ -36,7 +36,7 @@
             @Html.DisplayNameFor(model => model.RelationViewModels.First().TelephoneNumber)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().Country)
+            @Html.DisplayNameFor(model => model.RelationViewModels.First().CountryId)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.RelationViewModels.First().City)
@@ -68,7 +68,7 @@
         @Html.DisplayFor(modelItem => item.TelephoneNumber)
     </td>
     <td>
-        @Html.DisplayFor(modelItem => item.Country)
+        @Html.DisplayFor(modelItem => Model.Countries.First(p => p.Id == item.CountryId).Name)
     </td>
     <td>
         @Html.DisplayFor(modelItem => item.City)

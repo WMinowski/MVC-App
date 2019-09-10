@@ -11,5 +11,7 @@ namespace MVC_App.Domain.Models
         public IEnumerable<RelationViewModel> RelationViewModels { get; set; }
 
         public SelectList Categories { get; set; }
+
+        public List<tblCountry> Countries { get; set; }
     }
 }
