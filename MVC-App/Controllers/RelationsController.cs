@@ -17,7 +17,7 @@ namespace MVC_App.Controllers
 
         private SelectList categoryFilter;
 
-        private async Task<List<RelationViewModel>> InitRelationModels()
+        public async Task<List<RelationViewModel>> InitRelationModels()
         {
             var categories = db.tblCategory.ToList();
 
@@ -56,9 +56,9 @@ namespace MVC_App.Controllers
             return await relationModels.ToListAsync();
         }
 
-        private string ApplyMask(string value, string mask)
+        public string ApplyMask(string value, string mask)
         {
-            if (mask == string.Empty||mask == null) return value;
+            if (mask == string.Empty||mask == null||value == string.Empty) return value;
 
             List<char> result = new List<char>();
 
