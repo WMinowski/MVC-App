@@ -62,15 +62,7 @@ namespace UnitTestProject
 
             yield return new object[]
             {
-                "Test case 5 : ApplyMask_Given_value_with_no_separators_Should_return_modified_value_with_mask_separators",
-                "1488HH",
-                "NNNN-LL",
-                "1488-HH"
-            };
-
-            yield return new object[]
-            {
-                "Test case 6 : ApplyMask_Given_value_with_no_separators_Should_return_modified_value_with_all_mask_separators_applied",
+                "Test case 5 : ApplyMask_Given_value_with_no_separators_Should_return_modified_value_with_mask_separators_applied",
                 "1488HH",
                 "NN--NN--LL",
                 "14--88--HH"
@@ -78,7 +70,7 @@ namespace UnitTestProject
 
             yield return new object[]
             {
-                "Test case 7 : ApplyMask_Given_empty_value_Should_return_empty_value",
+                "Test case 6 : ApplyMask_Given_empty_value_Should_return_empty_value",
                 "",
                 "NNNN-LL",
                 ""
@@ -86,7 +78,7 @@ namespace UnitTestProject
 
             yield return new object[]
             {
-                "Test case 8 : ApplyMask_Given_value_with_no_mask_Should_return_the_same_value",
+                "Test case 7 : ApplyMask_Given_value_with_no_mask_Should_return_the_same_value",
                 "1488-HH",
                 "",
                 "1488-HH"
@@ -94,7 +86,7 @@ namespace UnitTestProject
 
             yield return new object[]
             {
-                "Test case 9 : ApplyMask_Given_value_with_numbers_instead_of_letters_Should_return_the_same_value",
+                "Test case 8 : ApplyMask_Given_value_with_numbers_instead_of_letters_Should_return_the_same_value",
                 "1488-88",
                 "NNNN-LL",
                 "1488-88"
@@ -102,7 +94,7 @@ namespace UnitTestProject
 
             yield return new object[]
             {
-                "Test case 10 : ApplyMask_Given_value_with_letters_instead_of_numbers_Should_return_the_same_value",
+                "Test case 9 : ApplyMask_Given_value_with_letters_instead_of_numbers_Should_return_the_same_value",
                 "14HH-HH",
                 "NNNN-LL",
                 "14HH-HH"

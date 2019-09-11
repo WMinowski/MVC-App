@@ -17,8 +17,12 @@ namespace MVC_App.Domain.Models
 
         public bool IsDisabled { get; set; }
 
+        [Required]
+        [StringLength(128)]
         public string Name { get; set; }
 
+        [Required]
+        [StringLength(128)]
         public string FullName { get; set; }
 
         [Required]
@@ -33,8 +37,12 @@ namespace MVC_App.Domain.Models
 
         public string CountryName { get; set; }
 
+        [Required]
+        [StringLength(128)]
         public string City { get; set; }
 
+        [Required]
+        [StringLength(128)]
         public string Street { get; set; }
 
         [Required]
@@ -44,7 +52,7 @@ namespace MVC_App.Domain.Models
         public string PostalCodeMask { get; set; }
 
         [Required]
-        [Range(1, int.MaxValue)]
+        [Range(1, int.MaxValue, ErrorMessage = "Invalid Street Number")]
         public int StreetNumber { get; set; }
     }
 }
