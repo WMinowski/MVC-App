@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MVC_App.Controllers;
 
@@ -10,47 +12,101 @@ namespace UnitTestProject
         RelationsController relationController = new RelationsController();
 
         [TestMethod]
-        public void ValueMaskCoincidence()
+        [DynamicData(nameof(ApplyMaskScenario), DynamicDataSourceType.Method)]
+        public void Test_ApplyMask(
+            string displayName,
+            string value,
+            string mask,
+            string result
+        )
         {
-            Assert.AreEqual(relationController.ApplyMask("1488-HH", "NNNN-LL"), "1488-HH");
+            var classUnderTest = new RelationsController();
+
+            Assert.AreEqual(classUnderTest.ApplyMask(value, mask), result);
         }
 
-        [TestMethod]
-        public void DifferentRegister()
+        private static IEnumerable<object[]> ApplyMaskScenario()
         {
-            Assert.AreEqual(relationController.ApplyMask("1488-hh", "NNNN-LL"), "1488-HH");
-            Assert.AreEqual(relationController.ApplyMask("1488-HH", "NNNN-ll"), "1488-hh");
-        }
 
-        [TestMethod]
-        public void DifferentCharNumber()
-        {
-            Assert.AreEqual(relationController.ApplyMask("148888-HH", "NNNN-LL"), "148888-HH");
-        }
+            yield return new object[]
+            {
+                "Test case 1 : ValueMaskCoincidence",
+                "1488-HH",
+                "NNNN-LL",
+                "1488-HH"
+            };
 
-        [TestMethod]
-        public void NoSeparators()
-        {
-            Assert.AreEqual(relationController.ApplyMask("1488HH", "NNNN-LL"), "1488-HH");
-        }
+            yield return new object[]
+            {
+                "Test case 2 : DifferentRegisterLowerToUpper",
+                "1488-hh",
+                "NNNN-LL",
+                "1488-HH"
+            };
 
-        [TestMethod]
-        public void ManySeparators()
-        {
-            Assert.AreEqual(relationController.ApplyMask("1488HH", "NN--NN-LL"), "14--88-HH");
-        }
+            yield return new object[]
+            {
+                "Test case 3 : DifferentRegisterUpperToLower",
+                "1488-HH",
+                "NNNN-ll",
+                "1488-hh"
+            };
 
-        [TestMethod]
-        public void EmptyValue()
-        {
-            Assert.AreEqual(relationController.ApplyMask("", "NNNN-LL"), "");
-        }
+            yield return new object[]
+            {
+                "Test case 4 : DifferentCharNumber",
+                "148888-HH",
+                "NNNN-LL",
+                "148888-HH"
+            };
 
-        [TestMethod]
-        public void DifferentChar()
-        {
-            Assert.AreEqual(relationController.ApplyMask("1488-88", "NNNN-LL"), "1488-88");
-            Assert.AreEqual(relationController.ApplyMask("14HH-HH", "NNNN-LL"), "14HH-HH");
+            yield return new object[]
+            {
+                "Test case 5 : NoSeparators",
+                "1488HH",
+                "NNNN-LL",
+                "1488-HH"
+            };
+
+            yield return new object[]
+            {
+                "Test case 6 : ManySeparators",
+                "1488HH",
+                "NN--NN--LL",
+                "14--88--HH"
+            };
+
+            yield return new object[]
+            {
+                "Test case 7 : EmptyValue",
+                "",
+                "NNNN-LL",
+                ""
+            };
+
+            yield return new object[]
+            {
+                "Test case 8 : EmptyMask",
+                "1488-HH",
+                "",
+                "1488-HH"
+            };
+
+            yield return new object[]
+            {
+                "Test case 9 : DifferentCharNumberToLetter",
+                "1488-88",
+                "NNNN-LL",
+                "1488-88"
+            };
+
+            yield return new object[]
+            {
+                "Test case 10 : DifferentCharLetterToNumber",
+                "14HH-HH",
+                "NNNN-LL",
+                "14HH-HH"
+            };
         }
     }
 }
