@@ -23,7 +23,7 @@ namespace MVC_App.Controllers
 
             categories.Insert(0, new tblCategory
             {
-                Id = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                Id = Guid.Empty,
                 CreatedAt = DateTime.Now,
                 CreatedBy = "admin",
                 IsDisabled = false,
