@@ -138,7 +138,9 @@ namespace MVC_App.Controllers
                 relationModels = relationModels.Where(p => p.Categories.Contains(categoryId.Value)).ToList();
             }
 
-            return View(new RelationListViewModel { RelationViewModels = relationModels, Categories = categoryFilter, Countries = countries });
+            var relationListVM = new RelationListViewModel { RelationViewModels = relationModels, Categories = categoryFilter, Countries = countries };
+
+            return View(relationListVM);
         }
 
         // GET: tblRelations/Details/5
@@ -162,9 +164,9 @@ namespace MVC_App.Controllers
         // GET: tblRelations/Create
         public ActionResult Create()
         {
-            ViewBag.Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name");
+            var relationVM = new CreateEditRelationViewModel { Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name") };
 
-            return View();
+            return View(relationVM);
         }
 
         // POST: tblRelations/Create
@@ -172,17 +174,17 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,CountryId,CountryName,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
+        public async Task<ActionResult> Create([Bind(Include = "Relation,Countries")] CreateEditRelationViewModel relationModel)
         {
             if (ModelState.IsValid)
             {
                 var relation = new tblRelation
                 {
                     Id = Guid.NewGuid(),
-                    Name = relationModel.Name,
-                    FullName = relationModel.FullName,
-                    TelephoneNumber = relationModel.TelephoneNumber,
-                    EMailAddress = relationModel.Email,
+                    Name = relationModel.Relation.Name,
+                    FullName = relationModel.Relation.FullName,
+                    TelephoneNumber = relationModel.Relation.TelephoneNumber,
+                    EMailAddress = relationModel.Relation.Email,
                     CreatedAt = DateTime.Now,
                     CreatedBy = "admin",
                     IsDisabled = false,
@@ -199,11 +201,11 @@ namespace MVC_App.Controllers
                 {
                     Id = Guid.NewGuid(),
                     RelationId = relation.Id,
-                    CountryId = relationModel.CountryId,
-                    City = relationModel.City,
-                    Street = relationModel.Street,
-                    PostalCode = ApplyMask(relationModel.PostalCode, db.tblCountry.Find(relationModel.CountryId).PostalCodeFormat),
-                    Number = relationModel.StreetNumber,
+                    CountryId = relationModel.Relation.CountryId,
+                    City = relationModel.Relation.City,
+                    Street = relationModel.Relation.Street,
+                    PostalCode = ApplyMask(relationModel.Relation.PostalCode, db.tblCountry.Find(relationModel.Relation.CountryId).PostalCodeFormat),
+                    Number = relationModel.Relation.StreetNumber,
                     AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
                 };
 
@@ -220,7 +222,6 @@ namespace MVC_App.Controllers
         // GET: tblRelations/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
-            ViewBag.Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name");
 
             if (id == null)
             {
@@ -236,7 +237,8 @@ namespace MVC_App.Controllers
 
             var relationModels = await InitRelationModels();
 
-            return View(relationModels.First(r => r.Id == tblRelation.Id));
+            var editRelationVM = new CreateEditRelationViewModel { Relation = relationModels.First(r => r.Id == tblRelation.Id), Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name") };
+            return View(editRelationVM);
         }
 
         // POST: tblRelations/Edit/5
@@ -244,32 +246,32 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Id,RelationAddressId,Name,FullName,Email,TelephoneNumber,CountryId,CountryName,City,Street,PostalCode,StreetNumber")] RelationViewModel relationModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Relation,Countries")] CreateEditRelationViewModel relationModel)
         {
 
             if (ModelState.IsValid)
             {
-                tblRelation tblRelation = await db.tblRelation.FindAsync(relationModel.Id);
+                tblRelation tblRelation = await db.tblRelation.FindAsync(relationModel.Relation.Id);
 
-                tblRelation.Name = relationModel.Name;
+                tblRelation.Name = relationModel.Relation.Name;
 
-                tblRelation.FullName = relationModel.FullName;
+                tblRelation.FullName = relationModel.Relation.FullName;
 
-                tblRelation.EMailAddress = relationModel.Email;
+                tblRelation.EMailAddress = relationModel.Relation.Email;
 
-                tblRelation.TelephoneNumber = relationModel.TelephoneNumber;
+                tblRelation.TelephoneNumber = relationModel.Relation.TelephoneNumber;
 
-                tblRelationAddress tblRelationAddress = await db.tblRelationAddress.FindAsync(relationModel.RelationAddressId);
+                tblRelationAddress tblRelationAddress = await db.tblRelationAddress.FindAsync(relationModel.Relation.RelationAddressId);
 
-                tblRelationAddress.CountryId = relationModel.CountryId;
+                tblRelationAddress.CountryId = relationModel.Relation.CountryId;
 
-                tblRelationAddress.City = relationModel.City;
+                tblRelationAddress.City = relationModel.Relation.City;
 
-                tblRelationAddress.Street = relationModel.Street;
+                tblRelationAddress.Street = relationModel.Relation.Street;
                 
-                tblRelationAddress.PostalCode = ApplyMask(relationModel.PostalCode, db.tblCountry.Find(relationModel.CountryId).PostalCodeFormat);
+                tblRelationAddress.PostalCode = ApplyMask(relationModel.Relation.PostalCode, db.tblCountry.Find(relationModel.Relation.CountryId).PostalCodeFormat);
 
-                tblRelationAddress.Number = relationModel.StreetNumber;
+                tblRelationAddress.Number = relationModel.Relation.StreetNumber;
 
                 db.Entry(tblRelation).State = EntityState.Modified;
 

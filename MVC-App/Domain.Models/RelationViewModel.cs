@@ -15,8 +15,6 @@ namespace MVC_App.Domain.Models
 
         public IList<Guid> Categories { get; set; }
 
-        public bool IsDisabled { get; set; }
-
         [Required(AllowEmptyStrings = false)]
         [StringLength(128, MinimumLength = 2, ErrorMessage = "Input should be between 2 and 128 characters")]
         public string Name { get; set; }
