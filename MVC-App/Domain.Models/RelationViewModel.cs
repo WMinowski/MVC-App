@@ -35,8 +35,6 @@ namespace MVC_App.Domain.Models
 
         public Guid CountryId { get; set; }
 
-        [Required(AllowEmptyStrings = false)]
-        [StringLength(128, MinimumLength = 2, ErrorMessage = "Input should be between 2 and 128 characters")]
         public string CountryName { get; set; }
 
         [Required(AllowEmptyStrings = false)]
