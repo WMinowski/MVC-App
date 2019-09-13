@@ -99,6 +99,14 @@ namespace UnitTestProject
                 "NNNN-LL",
                 "14HH-HH"
             };
+
+            yield return new object[]
+            {
+                "Test case 10 : ApplyMask_Given_value_with_numbers_only_and_mask_with_additional_letters_Should_return_the_same_value",
+                "1488",
+                "NNNN-LL",
+                "1488"
+            };
         }
     }
 }

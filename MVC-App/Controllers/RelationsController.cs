@@ -59,13 +59,51 @@ namespace MVC_App.Controllers
         public string ApplyMask(string value, string mask)
         {
             if (mask == string.Empty||mask == null||value == string.Empty) return value;
-
+            
             List<char> result = new List<char>();
 
             int valueIterator = 0;
 
+            int valueNumbersCount = 0;
+
+            int valueLettersCount = 0;
+
+            int maskNumbersCount = 0;
+
+            int maskLettersCount = 0;
+
+            foreach (char c in value)
+            {
+                if (char.IsDigit(c))
+                {
+                    valueNumbersCount++;
+                }
+                else if(char.IsLetter(c))
+                {
+                    valueLettersCount++;
+                }
+            }
+
+            foreach(char c in mask)
+            {
+                if (c == 'N')
+                {
+                    maskNumbersCount++;
+                }
+                else if (c == 'L' || c == 'l')
+                {
+                    maskLettersCount++;
+                }
+            }
+
+            if (valueNumbersCount != maskNumbersCount || valueLettersCount != maskLettersCount)
+            {
+                return value;
+            }
+
             for (int i = 0; i < mask.Length; i++)
             {
+                
                 switch (mask[i])
                 {
                     case 'N':
@@ -176,47 +214,50 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Relation,Countries")] CreateEditRelationViewModel relationModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var relation = new tblRelation
-                {
-                    Id = Guid.NewGuid(),
-                    Name = relationModel.Relation.Name,
-                    FullName = relationModel.Relation.FullName,
-                    TelephoneNumber = relationModel.Relation.TelephoneNumber,
-                    EMailAddress = relationModel.Relation.Email,
-                    CreatedAt = DateTime.Now,
-                    CreatedBy = "admin",
-                    IsDisabled = false,
-                    IsTemporary = false,
-                    IsMe = false,
-                    PaymentViaAutomaticDebit = false,
-                    InvoiceDateGenerationOptions = 0,
-                    InvoiceGroupByOptions = 0
-                };
 
-                db.tblRelation.Add(relation);
+                relationModel.Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name");
 
-                var relationAddress = new tblRelationAddress
-                {
-                    Id = Guid.NewGuid(),
-                    RelationId = relation.Id,
-                    CountryId = relationModel.Relation.CountryId,
-                    City = relationModel.Relation.City,
-                    Street = relationModel.Relation.Street,
-                    PostalCode = ApplyMask(relationModel.Relation.PostalCode, db.tblCountry.Find(relationModel.Relation.CountryId).PostalCodeFormat),
-                    Number = relationModel.Relation.StreetNumber,
-                    AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
-                };
-
-                db.tblRelationAddress.Add(relationAddress);
-
-                await db.SaveChangesAsync();
-
-                return RedirectToAction("Index");
+                return View(relationModel);
             }
 
-            return View(relationModel);
+            var relation = new tblRelation
+            {
+                Id = Guid.NewGuid(),
+                Name = relationModel.Relation.Name,
+                FullName = relationModel.Relation.FullName,
+                TelephoneNumber = relationModel.Relation.TelephoneNumber,
+                EMailAddress = relationModel.Relation.Email,
+                CreatedAt = DateTime.Now,
+                CreatedBy = "admin",
+                IsDisabled = false,
+                IsTemporary = false,
+                IsMe = false,
+                PaymentViaAutomaticDebit = false,
+                InvoiceDateGenerationOptions = 0,
+                InvoiceGroupByOptions = 0
+            };
+
+            db.tblRelation.Add(relation);
+
+            var relationAddress = new tblRelationAddress
+            {
+                Id = Guid.NewGuid(),
+                RelationId = relation.Id,
+                CountryId = relationModel.Relation.CountryId,
+                City = relationModel.Relation.City,
+                Street = relationModel.Relation.Street,
+                PostalCode = ApplyMask(relationModel.Relation.PostalCode, db.tblCountry.Find(relationModel.Relation.CountryId).PostalCodeFormat),
+                Number = relationModel.Relation.StreetNumber,
+                AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
+            };
+
+            db.tblRelationAddress.Add(relationAddress);
+
+            await db.SaveChangesAsync();
+
+            return RedirectToAction("Index");
         }
 
         // GET: tblRelations/Edit/5
@@ -238,6 +279,7 @@ namespace MVC_App.Controllers
             var relationModels = await InitRelationModels();
 
             var editRelationVM = new CreateEditRelationViewModel { Relation = relationModels.First(r => r.Id == tblRelation.Id), Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name") };
+
             return View(editRelationVM);
         }
 
