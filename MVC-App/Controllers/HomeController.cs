@@ -9,7 +9,6 @@ namespace MVC_App.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly testEntities db = new testEntities();
 
         public ActionResult Index()
         {

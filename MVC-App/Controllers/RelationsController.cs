@@ -8,201 +8,33 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MVC_App.Domain.Models;
+using MVC_App.Services;
+using Ninject;
 
 namespace MVC_App.Controllers
 {
     public class RelationsController : Controller
     {
-        private testEntities db = new testEntities();
-
-        private SelectList categoryFilter;
-
-        public async Task<List<RelationViewModel>> InitRelationModels()
+        private readonly IRelationService relationService;
+        
+        public RelationsController()
         {
-            var categories = db.tblCategory.ToList();
-
-            categories.Insert(0, new tblCategory
-            {
-                Id = Guid.Empty,
-                CreatedAt = DateTime.Now,
-                CreatedBy = "admin",
-                IsDisabled = false,
-                Name = "Все"
-            });
-
-            categoryFilter = new SelectList(categories, "Id", "Name");
-
-            var relationModels = from tblRelation in db.tblRelation
-                            join tblRelationAddress in db.tblRelationAddress on tblRelation.Id equals tblRelationAddress.RelationId
-                            join tblCountry in db.tblCountry on tblRelationAddress.CountryId equals tblCountry.Id
-                            where tblRelation.IsDisabled != true
-                            select new RelationViewModel
-                            {
-                                Id = tblRelation.Id,
-                                RelationAddressId = tblRelationAddress.Id,
-                                Categories = (from tblRelationCategory in db.tblRelationCategory where tblRelationCategory.RelationId == tblRelation.Id select tblRelationCategory.CategoryId).ToList(),
-                                Name = tblRelation.Name,
-                                FullName = tblRelation.FullName,
-                                TelephoneNumber = tblRelation.TelephoneNumber,
-                                Email = tblRelation.EMailAddress,
-                                CountryId = tblCountry.Id,
-                                CountryName = tblCountry.Name,
-                                City = tblRelationAddress.City,
-                                Street = tblRelationAddress.Street,
-                                PostalCode = tblRelationAddress.PostalCode,
-                                PostalCodeMask = tblCountry.PostalCodeFormat,
-                                StreetNumber = tblRelationAddress.Number ?? 0
-                            };
-            return await relationModels.ToListAsync();
+            IKernel ninjectKernel = new StandardKernel();
+            ninjectKernel.Bind<IRelationService>().To<RelationService>();
+            relationService = ninjectKernel.Get<IRelationService>();
         }
-
-        public string ApplyMask(string value, string mask)
-        {
-            if (mask == string.Empty||mask == null||value == string.Empty) return value;
-            
-            List<char> result = new List<char>();
-
-            int valueIterator = 0;
-
-            int valueNumbersCount = 0;
-
-            int valueLettersCount = 0;
-
-            int maskNumbersCount = 0;
-
-            int maskLettersCount = 0;
-
-            foreach (char c in value)
-            {
-                if (char.IsDigit(c))
-                {
-                    valueNumbersCount++;
-                }
-                else if(char.IsLetter(c))
-                {
-                    valueLettersCount++;
-                }
-            }
-
-            foreach(char c in mask)
-            {
-                if (c == 'N')
-                {
-                    maskNumbersCount++;
-                }
-                else if (c == 'L' || c == 'l')
-                {
-                    maskLettersCount++;
-                }
-            }
-
-            if (valueNumbersCount != maskNumbersCount || valueLettersCount != maskLettersCount)
-            {
-                return value;
-            }
-
-            for (int i = 0; i < mask.Length; i++)
-            {
-                
-                switch (mask[i])
-                {
-                    case 'N':
-                        {
-                            if (char.IsDigit(value[valueIterator]))
-                            {
-                                result.Add(value[valueIterator]);
-
-                                valueIterator++;
-                            }
-                            else return value;
-
-                            break;
-                        }
-                    case 'L':
-                        {
-                            if (char.IsLetter(value[valueIterator]))
-                            {
-                                result.Add(char.ToUpper(value[valueIterator]));
-
-                                valueIterator++;
-                            }
-                            else return value;
-
-                            break;
-                        }
-                    case 'l':
-                        {
-                            if (char.IsLetter(value[valueIterator]))
-                            {
-                                result.Add(char.ToLower(value[valueIterator]));
-
-                                valueIterator++;
-                            }
-                            else return value;
-
-                            break;
-                        }
-                    default:
-                        {
-                            result.Add(mask[i]);
-                            if (!char.IsLetterOrDigit(value[valueIterator]))
-                            {
-                                if (value[valueIterator] == mask[i])
-                                {
-                                    valueIterator++;
-                                }
-                                else return value;
-                            }
-                            break;
-                        }
-                }
-            }
-            if (value.Length == valueIterator)
-            {
-                return new string(result.ToArray());
-            }
-            else return value;
-        }
+        
 
         // GET: tblRelations
         public async Task<ActionResult> Index(Guid? categoryId)
         {
-            var countries = db.tblCountry.ToList();
-
-            var relationModels = await InitRelationModels();
-
-            if(categoryId != null && categoryId != Guid.Empty)
-            {
-                relationModels = relationModels.Where(p => p.Categories.Contains(categoryId.Value)).ToList();
-            }
-
-            var relationListVM = new RelationListViewModel { RelationViewModels = relationModels, Categories = categoryFilter, Countries = countries };
-
-            return View(relationListVM);
-        }
-
-        // GET: tblRelations/Details/5
-        public async Task<ActionResult> Details(Guid? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            tblRelation tblRelation = await db.tblRelation.FindAsync(id);
-
-            if (tblRelation == null)
-            {
-                return HttpNotFound();
-            }
-
-            return View(tblRelation);
+            return View(await relationService.GetAsync(categoryId));
         }
 
         // GET: tblRelations/Create
         public ActionResult Create()
         {
-            var relationVM = new CreateEditRelationViewModel { Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name") };
+            var relationVM = new CreateEditRelationVM { Countries = relationService.Countries };
 
             return View(relationVM);
         }
@@ -212,50 +44,17 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "Relation,Countries")] CreateEditRelationViewModel relationModel)
+        public async Task<ActionResult> Create([Bind(Include = "Relation,Countries")] CreateEditRelationVM relationVM)
         {
             if (!ModelState.IsValid)
             {
 
-                relationModel.Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name");
+                relationVM.Countries = relationService.Countries;
 
-                return View(relationModel);
+                return View(relationVM);
             }
 
-            var relation = new tblRelation
-            {
-                Id = Guid.NewGuid(),
-                Name = relationModel.Relation.Name,
-                FullName = relationModel.Relation.FullName,
-                TelephoneNumber = relationModel.Relation.TelephoneNumber,
-                EMailAddress = relationModel.Relation.Email,
-                CreatedAt = DateTime.Now,
-                CreatedBy = "admin",
-                IsDisabled = false,
-                IsTemporary = false,
-                IsMe = false,
-                PaymentViaAutomaticDebit = false,
-                InvoiceDateGenerationOptions = 0,
-                InvoiceGroupByOptions = 0
-            };
-
-            db.tblRelation.Add(relation);
-
-            var relationAddress = new tblRelationAddress
-            {
-                Id = Guid.NewGuid(),
-                RelationId = relation.Id,
-                CountryId = relationModel.Relation.CountryId,
-                City = relationModel.Relation.City,
-                Street = relationModel.Relation.Street,
-                PostalCode = ApplyMask(relationModel.Relation.PostalCode, db.tblCountry.Find(relationModel.Relation.CountryId).PostalCodeFormat),
-                Number = relationModel.Relation.StreetNumber,
-                AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
-            };
-
-            db.tblRelationAddress.Add(relationAddress);
-
-            await db.SaveChangesAsync();
+            await relationService.Create(relationVM);
 
             return RedirectToAction("Index");
         }
@@ -269,16 +68,16 @@ namespace MVC_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var tblRelation = await db.tblRelation.FindAsync(id);
+            var tblRelation = await relationService.Repository.DbContext.Relations.FindAsync(id);
 
             if (tblRelation == null)
             {
                 return HttpNotFound();
             }
 
-            var relationModels = await InitRelationModels();
+            var relationModels = await relationService.InitRelationModels();
 
-            var editRelationVM = new CreateEditRelationViewModel { Relation = relationModels.First(r => r.Id == tblRelation.Id), Countries = new SelectList(db.tblCountry.ToList(), "Id", "Name") };
+            var editRelationVM = new CreateEditRelationVM { Relation = relationModels.First(r => r.Id == tblRelation.Id), Countries = relationService.Countries };
 
             return View(editRelationVM);
         }
@@ -288,42 +87,16 @@ namespace MVC_App.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind(Include = "Relation,Countries")] CreateEditRelationViewModel relationModel)
+        public async Task<ActionResult> Edit([Bind(Include = "Relation,Countries")] CreateEditRelationVM relationVM)
         {
 
             if (ModelState.IsValid)
             {
-                tblRelation tblRelation = await db.tblRelation.FindAsync(relationModel.Relation.Id);
-
-                tblRelation.Name = relationModel.Relation.Name;
-
-                tblRelation.FullName = relationModel.Relation.FullName;
-
-                tblRelation.EMailAddress = relationModel.Relation.Email;
-
-                tblRelation.TelephoneNumber = relationModel.Relation.TelephoneNumber;
-
-                tblRelationAddress tblRelationAddress = await db.tblRelationAddress.FindAsync(relationModel.Relation.RelationAddressId);
-
-                tblRelationAddress.CountryId = relationModel.Relation.CountryId;
-
-                tblRelationAddress.City = relationModel.Relation.City;
-
-                tblRelationAddress.Street = relationModel.Relation.Street;
-                
-                tblRelationAddress.PostalCode = ApplyMask(relationModel.Relation.PostalCode, db.tblCountry.Find(relationModel.Relation.CountryId).PostalCodeFormat);
-
-                tblRelationAddress.Number = relationModel.Relation.StreetNumber;
-
-                db.Entry(tblRelation).State = EntityState.Modified;
-
-                db.Entry(tblRelationAddress).State = EntityState.Modified;
-
-                await db.SaveChangesAsync();
+                await relationService.Edit(relationVM);
 
                 return RedirectToAction("Index");
             }
-            return View(relationModel);
+            return View(relationVM);
         }
 
         // GET: tblRelations/Delete/5
@@ -334,7 +107,7 @@ namespace MVC_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+            Relation tblRelation = await relationService.Repository.DbContext.Relations.FindAsync(id);
 
             if (tblRelation == null)
             {
@@ -349,23 +122,16 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            tblRelation tblRelation = await db.tblRelation.FindAsync(id);
+            Relation tblRelation = await relationService.Repository.DbContext.Relations.FindAsync(id);
             
             //no removing, checking IsDisabled only
             tblRelation.IsDisabled = true;
 
-            await db.SaveChangesAsync();
+            await relationService.Repository.DbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
     }
 }
