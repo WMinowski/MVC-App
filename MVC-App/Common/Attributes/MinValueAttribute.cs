@@ -16,9 +16,9 @@ namespace MVC_App.Common.Attributes
         }
         public override bool IsValid(object value)
         {
-            if (value != null)
+            int appliedValue = 0;
+            if (int.TryParse(value.ToString(), out appliedValue))
             {
-                int appliedValue = int.Parse(value.ToString());
                 if (appliedValue >= _minValue)
                     return true;
                 else

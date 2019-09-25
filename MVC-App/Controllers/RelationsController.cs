@@ -25,13 +25,15 @@ namespace MVC_App.Controllers
         }
         
 
-        // GET: tblRelations
+        // GET: Relations
         public async Task<ActionResult> Index(Guid? categoryId)
         {
-            return View(await relationService.GetAsync(categoryId));
+            var list = await relationService.GetAsync(categoryId);
+
+            return View(list);
         }
 
-        // GET: tblRelations/Create
+        // GET: Relations/Create
         public ActionResult Create()
         {
             var relationVM = new CreateEditRelationVM { Countries = relationService.Countries };
@@ -39,7 +41,7 @@ namespace MVC_App.Controllers
             return View(relationVM);
         }
 
-        // POST: tblRelations/Create
+        // POST: Relations/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -59,7 +61,7 @@ namespace MVC_App.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: tblRelations/Edit/5
+        // GET: Relations/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
 
@@ -82,7 +84,7 @@ namespace MVC_App.Controllers
             return View(editRelationVM);
         }
 
-        // POST: tblRelations/Edit/5
+        // POST: Relations/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -99,7 +101,7 @@ namespace MVC_App.Controllers
             return View(relationVM);
         }
 
-        // GET: tblRelations/Delete/5
+        // GET: Relations/Delete/5
         public async Task<ActionResult> Delete(Guid? id)
         {
             if (id == null)
@@ -117,7 +119,7 @@ namespace MVC_App.Controllers
             return View(relation);
         }
 
-        // POST: tblRelations/Delete/5
+        // POST: Relations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)

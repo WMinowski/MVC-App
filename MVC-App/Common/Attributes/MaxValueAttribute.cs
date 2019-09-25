@@ -8,8 +8,6 @@ namespace MVC_App.Common.Attributes
 {
     public class MaxValueAttribute : ValidationAttribute
     {
-
-
         private static int _maxValue;
 
         public MaxValueAttribute(int maxValue)
@@ -18,9 +16,9 @@ namespace MVC_App.Common.Attributes
         }
         public override bool IsValid(object value)
         {
-            if (value != null)
+            int appliedValue = 0;
+            if (int.TryParse(value.ToString(), out appliedValue))
             {
-                int appliedValue = int.Parse(value.ToString());
                 if (appliedValue <= _maxValue)
                     return true;
                 else

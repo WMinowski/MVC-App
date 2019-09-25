@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="PostalCodeMaskTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -95,6 +94,9 @@
       <Project>{0ea8827d-77f0-4892-beaa-2a3b479aab74}</Project>
       <Name>MVC-App</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

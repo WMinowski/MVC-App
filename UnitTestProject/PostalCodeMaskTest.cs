@@ -37,7 +37,13 @@ namespace UnitTestProject
             var mockRelationAddress = new Mock<GenericRepository<RelationAddress>>();
             mockRelationAddress.Setup(repo => repo.Get()).Returns(GetTest<RelationAddress>());
 
-            IRelationService classUnderTest = new RelationService(new UnitOfWork() { RelationRepository = mockRelation.Object, CategoryRepository = mockCategory.Object, CountryRepository = mockCountry.Object, RelationAddressRepository = mockRelationAddress.Object, RelationCategoryRepository = mockRelationCategory.Object });
+            IRelationService classUnderTest = new RelationService(new UnitOfWork() {
+                RelationRepository = mockRelation.Object,
+                CategoryRepository = mockCategory.Object,
+                CountryRepository = mockCountry.Object,
+                RelationAddressRepository = mockRelationAddress.Object,
+                RelationCategoryRepository = mockRelationCategory.Object
+            });
 
             Assert.AreEqual(classUnderTest.ApplyMask(value, mask), result);
         }
