@@ -8,13 +8,15 @@ using System.Web.Mvc;
 
 namespace MVC_App.Services
 {
-    interface IRelationService
+    public interface IRelationService
     {
-        IRelationRepository Repository { get; set; }
-
         SelectList Categories { get; set; }
 
         SelectList Countries { get; set; }
+
+        string ApplyMask(string value, string mask);
+
+        Task<Relation> GetRelationAsync(Guid? id);
 
         Task<List<RelationVM>> InitRelationModels();
 
@@ -23,5 +25,7 @@ namespace MVC_App.Services
         Task Create(CreateEditRelationVM relationVM);
 
         Task Edit(CreateEditRelationVM relationVM);
+
+        Task Delete(Guid id);
     }
 }

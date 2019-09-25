@@ -1,4 +1,5 @@
 ﻿using MVC_App.Domain.Models;
+using MVC_App.Repositories;
 using Ninject;
 using System;
 using System.Collections.Generic;
@@ -12,19 +13,17 @@ namespace MVC_App.Services
 {
     public class RelationService : IRelationService
     {
-        public IRelationRepository Repository { get; set; }
+        private readonly UnitOfWork _unitOfWork;
 
         public SelectList Categories { get; set; }
 
         public SelectList Countries { get; set; }
 
-        public RelationService()
+        public RelationService(UnitOfWork unitOfWork)
         {
-            IKernel ninjectKernel = new StandardKernel();
-            ninjectKernel.Bind<IRelationRepository>().To<RelationRepository>();
-            Repository = ninjectKernel.Get<IRelationRepository>();
+            _unitOfWork = unitOfWork;
 
-            var categories = Repository.DbContext.Categories.ToList();
+            var categories = unitOfWork.CategoryRepository.Get().ToList();
 
             categories.Insert(0, new Category
             {
@@ -37,7 +36,7 @@ namespace MVC_App.Services
 
             Categories = new SelectList(categories, "Id", "Name");
 
-            var countries = Repository.DbContext.Countries.ToList();
+            var countries = unitOfWork.CountryRepository.Get().ToList();
 
             Countries = new SelectList(countries, "Id", "Name");
         }
@@ -46,28 +45,28 @@ namespace MVC_App.Services
         {
             
 
-            var relationModels = from tblRelation in Repository.DbContext.Relations
-                                 join tblRelationAddress in Repository.DbContext.RelationAddresses on tblRelation.Id equals tblRelationAddress.RelationId
-                                 join tblCountry in Repository.DbContext.Countries on tblRelationAddress.CountryId equals tblCountry.Id
-                                 where !tblRelation.IsDisabled
+            var relationModels = from relation in _unitOfWork.RelationRepository.Get()
+                                 join relationAddress in _unitOfWork.RelationAddressRepository.Get() on relation.Id equals relationAddress.RelationId
+                                 join country in _unitOfWork.CountryRepository.Get() on relationAddress.CountryId equals country.Id
+                                 where !relation.IsDisabled
                                  select new RelationVM
                                  {
-                                     Id = tblRelation.Id,
-                                     RelationAddressId = tblRelationAddress.Id,
-                                     Categories = (from tblRelationCategory in Repository.DbContext.RelationCategories where tblRelationCategory.RelationId == tblRelation.Id select tblRelationCategory.CategoryId).ToList(),
-                                     Name = tblRelation.Name,
-                                     FullName = tblRelation.FullName,
-                                     TelephoneNumber = tblRelation.TelephoneNumber,
-                                     Email = tblRelation.EMailAddress,
-                                     CountryId = tblCountry.Id,
-                                     CountryName = tblCountry.Name,
-                                     City = tblRelationAddress.City,
-                                     Street = tblRelationAddress.Street,
-                                     PostalCode = tblRelationAddress.PostalCode,
-                                     PostalCodeMask = tblCountry.PostalCodeFormat,
-                                     StreetNumber = tblRelationAddress.Number ?? 0
+                                     Id = relation.Id,
+                                     RelationAddressId = relationAddress.Id,
+                                     Categories = (from relationCategory in _unitOfWork.RelationCategoryRepository.Get() where relationCategory.RelationId == relation.Id select relationCategory.CategoryId).ToList(),
+                                     Name = relation.Name,
+                                     FullName = relation.FullName,
+                                     TelephoneNumber = relation.TelephoneNumber,
+                                     Email = relation.EMailAddress,
+                                     CountryId = country.Id,
+                                     CountryName = country.Name,
+                                     City = relationAddress.City,
+                                     Street = relationAddress.Street,
+                                     PostalCode = relationAddress.PostalCode,
+                                     PostalCodeMask = country.PostalCodeFormat,
+                                     StreetNumber = relationAddress.Number ?? 0
                                  };
-            return await relationModels.ToListAsync();
+            return relationModels.ToList();
         }
 
         public string ApplyMask(string value, string mask)
@@ -178,9 +177,14 @@ namespace MVC_App.Services
             else return value;
         }
 
+        public async Task<Relation> GetRelationAsync(Guid? id)
+        {
+            return _unitOfWork.RelationRepository.GetByID(id);
+        }
+
         public async Task<RelationListVM> GetAsync(Guid? categoryId)
         {
-            var countries = Repository.DbContext.Countries.ToList();
+            var countries = _unitOfWork.CountryRepository.Get().ToList();
 
             var relationModels = await InitRelationModels();
 
@@ -213,7 +217,7 @@ namespace MVC_App.Services
                 InvoiceGroupByOptions = 0
             };
 
-            Repository.DbContext.Relations.Add(relation);
+            _unitOfWork.RelationRepository.Insert(relation);
 
             var relationAddress = new RelationAddress
             {
@@ -222,45 +226,55 @@ namespace MVC_App.Services
                 CountryId = relationVM.Relation.CountryId,
                 City = relationVM.Relation.City,
                 Street = relationVM.Relation.Street,
-                PostalCode = ApplyMask(relationVM.Relation.PostalCode, Repository.DbContext.Countries.Find(relationVM.Relation.CountryId).PostalCodeFormat),
+                PostalCode = ApplyMask(relationVM.Relation.PostalCode, _unitOfWork.CountryRepository.GetByID(relationVM.Relation.CountryId).PostalCodeFormat),
                 Number = relationVM.Relation.StreetNumber,
                 AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
             };
 
-            Repository.DbContext.RelationAddresses.Add(relationAddress);
+            _unitOfWork.RelationAddressRepository.Insert(relationAddress);
 
-            await Repository.DbContext.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
         }
 
         public async Task Edit(CreateEditRelationVM relationVM)
         {
-            Relation tblRelation = await Repository.DbContext.Relations.FindAsync(relationVM.Relation.Id);
+            Relation relation = _unitOfWork.RelationRepository.GetByID(relationVM.Relation.Id);
 
-            tblRelation.Name = relationVM.Relation.Name;
+            relation.Name = relationVM.Relation.Name;
 
-            tblRelation.FullName = relationVM.Relation.FullName;
+            relation.FullName = relationVM.Relation.FullName;
 
-            tblRelation.EMailAddress = relationVM.Relation.Email;
+            relation.EMailAddress = relationVM.Relation.Email;
 
-            tblRelation.TelephoneNumber = relationVM.Relation.TelephoneNumber;
+            relation.TelephoneNumber = relationVM.Relation.TelephoneNumber;
 
-            RelationAddress tblRelationAddress = await Repository.DbContext.RelationAddresses.FindAsync(relationVM.Relation.RelationAddressId);
+            RelationAddress relationAddress = _unitOfWork.RelationAddressRepository.GetByID(relationVM.Relation.RelationAddressId);
 
-            tblRelationAddress.CountryId = relationVM.Relation.CountryId;
+            relationAddress.CountryId = relationVM.Relation.CountryId;
 
-            tblRelationAddress.City = relationVM.Relation.City;
+            relationAddress.City = relationVM.Relation.City;
 
-            tblRelationAddress.Street = relationVM.Relation.Street;
+            relationAddress.Street = relationVM.Relation.Street;
 
-            tblRelationAddress.PostalCode = ApplyMask(relationVM.Relation.PostalCode, Repository.DbContext.Countries.Find(relationVM.Relation.CountryId).PostalCodeFormat);
+            relationAddress.PostalCode = ApplyMask(relationVM.Relation.PostalCode, _unitOfWork.CountryRepository.GetByID(relationVM.Relation.CountryId).PostalCodeFormat);
 
-            tblRelationAddress.Number = relationVM.Relation.StreetNumber;
+            relationAddress.Number = relationVM.Relation.StreetNumber;
 
-            Repository.DbContext.Entry(tblRelation).State = EntityState.Modified;
+            _unitOfWork.RelationRepository.Update(relation);
 
-            Repository.DbContext.Entry(tblRelationAddress).State = EntityState.Modified;
+            _unitOfWork.RelationAddressRepository.Update(relationAddress);
 
-            await Repository.DbContext.SaveChangesAsync();
+            await _unitOfWork.SaveAsync();
+        }
+
+        public async Task Delete(Guid id)
+        {
+            var relation = _unitOfWork.RelationRepository.GetByID(id);
+
+            //no removing, checking IsDisabled only
+            relation.IsDisabled = true;
+
+            await _unitOfWork.SaveAsync();
         }
     }
 }

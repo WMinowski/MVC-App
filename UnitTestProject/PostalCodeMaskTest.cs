@@ -2,14 +2,16 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using MVC_App.Controllers;
+using Moq;
+using MVC_App.Domain.Models;
+using MVC_App.Services;
+using MVC_App.Repositories;
 
 namespace UnitTestProject
 {
     [TestClass]
     public class PostalCodeMaskTest
     {
-        RelationsController relationController = new RelationsController();
 
         [TestMethod]
         [DynamicData(nameof(ApplyMaskScenario), DynamicDataSourceType.Method)]
@@ -20,9 +22,29 @@ namespace UnitTestProject
             string result
         )
         {
-            var classUnderTest = new RelationsController();
+            var mockRelation = new Mock<GenericRepository<Relation>>();
+            mockRelation.Setup(repo => repo.Get()).Returns(GetTest<Relation>());
+
+            var mockCountry = new Mock<GenericRepository<Country>>();
+            mockCountry.Setup(repo => repo.Get()).Returns(GetTest<Country>());
+
+            var mockCategory = new Mock<GenericRepository<Category>>();
+            mockCategory.Setup(repo => repo.Get()).Returns(GetTest<Category>());
+
+            var mockRelationCategory = new Mock<GenericRepository<RelationCategory>>();
+            mockRelationCategory.Setup(repo => repo.Get()).Returns(GetTest<RelationCategory>());
+
+            var mockRelationAddress = new Mock<GenericRepository<RelationAddress>>();
+            mockRelationAddress.Setup(repo => repo.Get()).Returns(GetTest<RelationAddress>());
+
+            IRelationService classUnderTest = new RelationService(new UnitOfWork() { RelationRepository = mockRelation.Object, CategoryRepository = mockCategory.Object, CountryRepository = mockCountry.Object, RelationAddressRepository = mockRelationAddress.Object, RelationCategoryRepository = mockRelationCategory.Object });
 
             Assert.AreEqual(classUnderTest.ApplyMask(value, mask), result);
+        }
+
+        private IEnumerable<T> GetTest<T>()
+        {
+            return new List<T>();
         }
 
         private static IEnumerable<object[]> ApplyMaskScenario()

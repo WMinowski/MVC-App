@@ -68,16 +68,16 @@ namespace MVC_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var tblRelation = await relationService.Repository.DbContext.Relations.FindAsync(id);
+            var relation = await relationService.GetRelationAsync(id);
 
-            if (tblRelation == null)
+            if (relation == null)
             {
                 return HttpNotFound();
             }
 
             var relationModels = await relationService.InitRelationModels();
 
-            var editRelationVM = new CreateEditRelationVM { Relation = relationModels.First(r => r.Id == tblRelation.Id), Countries = relationService.Countries };
+            var editRelationVM = new CreateEditRelationVM { Relation = relationModels.First(r => r.Id == relation.Id), Countries = relationService.Countries };
 
             return View(editRelationVM);
         }
@@ -107,14 +107,14 @@ namespace MVC_App.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            Relation tblRelation = await relationService.Repository.DbContext.Relations.FindAsync(id);
+            var relation = await relationService.GetRelationAsync(id);
 
-            if (tblRelation == null)
+            if (relation == null)
             {
                 return HttpNotFound();
             }
 
-            return View(tblRelation);
+            return View(relation);
         }
 
         // POST: tblRelations/Delete/5
@@ -122,12 +122,7 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> DeleteConfirmed(Guid id)
         {
-            Relation tblRelation = await relationService.Repository.DbContext.Relations.FindAsync(id);
-            
-            //no removing, checking IsDisabled only
-            tblRelation.IsDisabled = true;
-
-            await relationService.Repository.DbContext.SaveChangesAsync();
+            await relationService.Delete(id);
 
             return RedirectToAction("Index");
         }
