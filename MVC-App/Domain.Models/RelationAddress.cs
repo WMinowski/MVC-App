@@ -44,10 +44,10 @@ namespace MVC_App.Domain.Models
 
         public Guid Id { get; set; }
 
-        public virtual AddressType tblAddressType { get; set; }
+        public virtual AddressType AddressType { get; set; }
 
-        public virtual Country tblCountry { get; set; }
+        public virtual Country Country { get; set; }
 
-        public virtual Relation tblRelation { get; set; }
+        public virtual Relation Relation { get; set; }
     }
 }

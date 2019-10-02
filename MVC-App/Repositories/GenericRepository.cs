@@ -12,9 +12,9 @@ namespace MVC_App.Repositories
 {
     public class GenericRepository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private RelationContext dbContext;
+        private readonly DbContext dbContext;
 
-        private DbSet<TEntity> dbSet;
+        private readonly DbSet<TEntity> dbSet;
 
         public GenericRepository() { }
 
@@ -26,9 +26,7 @@ namespace MVC_App.Repositories
 
         public virtual IEnumerable<TEntity> Get()
         {
-            IQueryable<TEntity> query = dbSet;
-            
-            return query.ToList();
+            return dbSet.ToList();
         }
         public virtual TEntity GetByID(object id)
         {
@@ -56,10 +54,5 @@ namespace MVC_App.Repositories
             dbSet.Attach(entityToUpdate);
             dbContext.Entry(entityToUpdate).State = EntityState.Modified;
         }
-
-        //public void Dispose()
-        //{
-        //    ((IDisposable)dbContext).Dispose();
-        //}
     }
 }

@@ -22,19 +22,19 @@ namespace UnitTestProject
             string result
         )
         {
-            var mockRelation = new Mock<GenericRepository<Relation>>();
+            var mockRelation = new Mock<RelationRepository>();
             mockRelation.Setup(repo => repo.Get()).Returns(GetTest<Relation>());
 
-            var mockCountry = new Mock<GenericRepository<Country>>();
+            var mockCountry = new Mock<CountryRepository>();
             mockCountry.Setup(repo => repo.Get()).Returns(GetTest<Country>());
 
-            var mockCategory = new Mock<GenericRepository<Category>>();
+            var mockCategory = new Mock<CategoryRepository>();
             mockCategory.Setup(repo => repo.Get()).Returns(GetTest<Category>());
 
-            var mockRelationCategory = new Mock<GenericRepository<RelationCategory>>();
+            var mockRelationCategory = new Mock<RelationCategoryRepository>();
             mockRelationCategory.Setup(repo => repo.Get()).Returns(GetTest<RelationCategory>());
 
-            var mockRelationAddress = new Mock<GenericRepository<RelationAddress>>();
+            var mockRelationAddress = new Mock<RelationAddressRepository>();
             mockRelationAddress.Setup(repo => repo.Get()).Returns(GetTest<RelationAddress>());
 
             IRelationService classUnderTest = new RelationService(new UnitOfWork() {

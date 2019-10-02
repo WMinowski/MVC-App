@@ -9,59 +9,59 @@ namespace MVC_App.Repositories
 {
     public class UnitOfWork : IDisposable
     {
-        private RelationContext context = new RelationContext();
+        private readonly RelationContext context = new RelationContext();
 
-        private GenericRepository<Relation> relationRepository;
+        private RelationRepository relationRepository;
 
-        private GenericRepository<RelationAddress> relationAddressRepository;
+        private RelationAddressRepository relationAddressRepository;
 
-        private GenericRepository<Country> countryRepository;
+        private CountryRepository countryRepository;
 
-        private GenericRepository<Category> categoryRepository;
+        private CategoryRepository categoryRepository;
 
-        private GenericRepository<RelationCategory> relationCategoryRepository;
+        private RelationCategoryRepository relationCategoryRepository;
 
-        public GenericRepository<Relation> RelationRepository
+        public RelationRepository RelationRepository
         {
             get
             {
-                return this.relationRepository ?? new GenericRepository<Relation>(context);
+                return this.relationRepository ?? new RelationRepository(context);
             }
             set { relationRepository = value; }
         }
 
-        public GenericRepository<RelationAddress> RelationAddressRepository
+        public RelationAddressRepository RelationAddressRepository
         {
             get
             {
-                return this.relationAddressRepository ?? new GenericRepository<RelationAddress>(context);
+                return this.relationAddressRepository ?? new RelationAddressRepository(context);
             }
             set { relationAddressRepository = value; }
         }
 
-        public GenericRepository<Country> CountryRepository
+        public CountryRepository CountryRepository
         {
             get
             {
-                return this.countryRepository ?? new GenericRepository<Country>(context);
+                return this.countryRepository ?? new CountryRepository(context);
             }
             set { countryRepository = value; }
         }
 
-        public GenericRepository<Category> CategoryRepository
+        public CategoryRepository CategoryRepository
         {
             get
             {
-                return this.categoryRepository ?? new GenericRepository<Category>(context);
+                return this.categoryRepository ?? new CategoryRepository(context);
             }
             set { categoryRepository = value; }
         }
 
-        public GenericRepository<RelationCategory> RelationCategoryRepository
+        public RelationCategoryRepository RelationCategoryRepository
         {
             get
             {
-                return this.relationCategoryRepository ?? new GenericRepository<RelationCategory>(context);
+                return this.relationCategoryRepository ?? new RelationCategoryRepository(context);
             }
             set { relationCategoryRepository = value; }
         }

@@ -26,7 +26,5 @@ namespace MVC_App.Common.Attributes
             }
             return false;
         }
-
-
     }
 }

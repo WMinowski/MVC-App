@@ -62,8 +62,8 @@ namespace MVC_App.Domain.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<AddressType>()
-                .HasMany(e => e.tblRelationAddress)
-                .WithRequired(e => e.tblAddressType)
+                .HasMany(e => e.RelationAddress)
+                .WithRequired(e => e.AddressType)
                 .HasForeignKey(e => e.AddressTypeId);
 
             modelBuilder.Entity<Category>()
@@ -107,7 +107,7 @@ namespace MVC_App.Domain.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Category>()
-                .HasMany(e => e.tblRelationCategory)
+                .HasMany(e => e.RelationCategory)
                 .WithRequired(e => e.tblCategory)
                 .HasForeignKey(e => e.CategoryId);
 
@@ -140,8 +140,8 @@ namespace MVC_App.Domain.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Country>()
-                .HasMany(e => e.tblRelationAddress)
-                .WithOptional(e => e.tblCountry)
+                .HasMany(e => e.RelationAddress)
+                .WithOptional(e => e.Country)
                 .HasForeignKey(e => e.CountryId)
                 .WillCascadeOnDelete();
 
@@ -290,12 +290,12 @@ namespace MVC_App.Domain.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<Relation>()
-                .HasMany(e => e.tblRelationAddress)
-                .WithRequired(e => e.tblRelation)
+                .HasMany(e => e.RelationAddress)
+                .WithRequired(e => e.Relation)
                 .HasForeignKey(e => e.RelationId);
 
             modelBuilder.Entity<Relation>()
-                .HasMany(e => e.tblRelationCategory)
+                .HasMany(e => e.RelationCategory)
                 .WithRequired(e => e.tblRelation)
                 .HasForeignKey(e => e.RelationId);
 

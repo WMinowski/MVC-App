@@ -12,8 +12,8 @@ namespace MVC_App.Domain.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Relation()
         {
-            tblRelationAddress = new HashSet<RelationAddress>();
-            tblRelationCategory = new HashSet<RelationCategory>();
+            RelationAddress = new HashSet<RelationAddress>();
+            RelationCategory = new HashSet<RelationCategory>();
         }
 
         public Guid Id { get; set; }
@@ -22,7 +22,7 @@ namespace MVC_App.Domain.Models
 
         [Required]
         [StringLength(50)]
-        public string CreatedBy { get; set; }
+        public string CreatedBy { get; set; } = "admin";
 
         public DateTime? ModifiedAt { get; set; }
 
@@ -268,9 +268,9 @@ namespace MVC_App.Domain.Models
         public int? Flags { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RelationAddress> tblRelationAddress { get; set; }
+        public virtual ICollection<RelationAddress> RelationAddress { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RelationCategory> tblRelationCategory { get; set; }
+        public virtual ICollection<RelationCategory> RelationCategory { get; set; }
     }
 }

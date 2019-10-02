@@ -1,4 +1,6 @@
-﻿using MVC_App.Domain.Models;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using MVC_App.Domain.Models;
 using MVC_App.Repositories;
 using Ninject;
 using System;
@@ -75,15 +77,7 @@ namespace MVC_App.Services
 
             List<char> result = new List<char>();
 
-            int valueIterator = 0;
-
-            int valueNumbersCount = 0;
-
-            int valueLettersCount = 0;
-
-            int maskNumbersCount = 0;
-
-            int maskLettersCount = 0;
+            int valueIterator = 0, valueNumbersCount = 0, valueLettersCount = 0, maskNumbersCount = 0, maskLettersCount = 0;
 
             foreach (char c in value)
             {
@@ -116,7 +110,6 @@ namespace MVC_App.Services
 
             for (int i = 0; i < mask.Length; i++)
             {
-
                 switch (mask[i])
                 {
                     case 'N':
@@ -200,36 +193,40 @@ namespace MVC_App.Services
 
         public async Task Create(CreateEditRelationVM relationVM)
         {
-            var relation = new Relation
-            {
-                Id = Guid.NewGuid(),
-                Name = relationVM.Relation.Name,
-                FullName = relationVM.Relation.FullName,
-                TelephoneNumber = relationVM.Relation.TelephoneNumber,
-                EMailAddress = relationVM.Relation.Email,
-                CreatedAt = DateTime.Now,
-                CreatedBy = "admin",
-                IsDisabled = false,
-                IsTemporary = false,
-                IsMe = false,
-                PaymentViaAutomaticDebit = false,
-                InvoiceDateGenerationOptions = 0,
-                InvoiceGroupByOptions = 0
-            };
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<RelationVM, Relation>()
+            .AfterMap((src, dest) => {
+                dest.Id = Guid.NewGuid();
+                dest.EMailAddress = src.Email;
+                dest.CreatedAt = DateTime.Now;
+                dest.CreatedBy = "admin";
+                dest.IsDisabled = false;
+                dest.IsTemporary = false;
+                dest.IsMe = false;
+                dest.PaymentViaAutomaticDebit = false;
+                dest.InvoiceDateGenerationOptions = 0;
+                dest.InvoiceGroupByOptions = 0;
+            }
+            ));
+
+            var mapper = config.CreateMapper();
+
+            var relation = mapper.Map<Relation>(relationVM.Relation);
 
             _unitOfWork.RelationRepository.Insert(relation);
 
-            var relationAddress = new RelationAddress
-            {
-                Id = Guid.NewGuid(),
-                RelationId = relation.Id,
-                CountryId = relationVM.Relation.CountryId,
-                City = relationVM.Relation.City,
-                Street = relationVM.Relation.Street,
-                PostalCode = ApplyMask(relationVM.Relation.PostalCode, _unitOfWork.CountryRepository.GetByID(relationVM.Relation.CountryId).PostalCodeFormat),
-                Number = relationVM.Relation.StreetNumber,
-                AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002")
-            };
+            config = new MapperConfiguration(cfg => cfg.CreateMap<RelationVM, RelationAddress>()
+            .AfterMap((src, dest) => {
+                dest.Id = Guid.NewGuid();
+                dest.RelationId = relation.Id;
+                dest.PostalCode = ApplyMask(src.PostalCode, _unitOfWork.CountryRepository.GetByID(relationVM.Relation.CountryId).PostalCodeFormat);
+                dest.Number = src.StreetNumber;
+                dest.AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002");
+            }
+            ));
+
+            mapper = config.CreateMapper();
+
+            var relationAddress = mapper.Map<RelationAddress>(relationVM.Relation);
 
             _unitOfWork.RelationAddressRepository.Insert(relationAddress);
 
@@ -238,27 +235,41 @@ namespace MVC_App.Services
 
         public async Task Edit(CreateEditRelationVM relationVM)
         {
-            Relation relation = _unitOfWork.RelationRepository.GetByID(relationVM.Relation.Id);
+            var relation = _unitOfWork.RelationRepository.GetByID(relationVM.Relation.Id);
 
-            relation.Name = relationVM.Relation.Name;
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<RelationVM, Relation>()
+            .ForMember("Id", opt => opt.Ignore())
+            .AfterMap((src, dest) => {
+                dest.EMailAddress = src.Email;
+                dest.CreatedAt = DateTime.Now;
+                dest.CreatedBy = "admin";
+                dest.IsDisabled = false;
+                dest.IsTemporary = false;
+                dest.IsMe = false;
+                dest.PaymentViaAutomaticDebit = false;
+                dest.InvoiceDateGenerationOptions = 0;
+                dest.InvoiceGroupByOptions = 0;
+            }
+            ));
 
-            relation.FullName = relationVM.Relation.FullName;
+            var mapper = config.CreateMapper();
 
-            relation.EMailAddress = relationVM.Relation.Email;
+            mapper.Map<RelationVM, Relation>(relationVM.Relation, relation);
 
-            relation.TelephoneNumber = relationVM.Relation.TelephoneNumber;
+            var relationAddress = _unitOfWork.RelationAddressRepository.GetByID(relationVM.Relation.RelationAddressId);
 
-            RelationAddress relationAddress = _unitOfWork.RelationAddressRepository.GetByID(relationVM.Relation.RelationAddressId);
+            config = new MapperConfiguration(cfg => cfg.CreateMap<RelationVM, RelationAddress>()
+            .ForMember("Id", opt => opt.Ignore())
+            .AfterMap((src, dest) => {
+                dest.PostalCode = ApplyMask(src.PostalCode, _unitOfWork.CountryRepository.GetByID(relationVM.Relation.CountryId).PostalCodeFormat);
+                dest.Number = src.StreetNumber;
+                dest.AddressTypeId = Guid.Parse("00000000-0000-0000-0000-000000000002");
+            }
+            ));
 
-            relationAddress.CountryId = relationVM.Relation.CountryId;
+            mapper = config.CreateMapper();
 
-            relationAddress.City = relationVM.Relation.City;
-
-            relationAddress.Street = relationVM.Relation.Street;
-
-            relationAddress.PostalCode = ApplyMask(relationVM.Relation.PostalCode, _unitOfWork.CountryRepository.GetByID(relationVM.Relation.CountryId).PostalCodeFormat);
-
-            relationAddress.Number = relationVM.Relation.StreetNumber;
+            mapper.Map<RelationVM, RelationAddress>(relationVM.Relation, relationAddress);
 
             _unitOfWork.RelationRepository.Update(relation);
 

@@ -12,7 +12,7 @@ namespace MVC_App.Domain.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public AddressType()
         {
-            tblRelationAddress = new HashSet<RelationAddress>();
+            RelationAddress = new HashSet<RelationAddress>();
         }
 
         public Guid Id { get; set; }
@@ -82,6 +82,6 @@ namespace MVC_App.Domain.Models
         public DateTime? Timestamp4 { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<RelationAddress> tblRelationAddress { get; set; }
+        public virtual ICollection<RelationAddress> RelationAddress { get; set; }
     }
 }
