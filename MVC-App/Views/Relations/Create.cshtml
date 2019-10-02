@@ -1,4 +1,4 @@
-﻿@model MVC_App.Domain.Models.CreateEditRelationViewModel
+﻿@model MVC_App.Domain.Models.CreateEditRelationVM
 
 @{
     ViewBag.Title = "Create";
@@ -52,8 +52,8 @@
     <div class="form-group">
         @Html.LabelFor(model => model.Relation.CountryName, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            @Html.DropDownListFor(m => m.Relation.CountryId, Model.Countries as SelectList, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Relation.CountryName, "", new { @class = "text-danger" })
+            @Html.DropDownListFor(m => m.Relation.CountryId, Model.Countries, new { htmlAttributes = new { @class = "form-control" } })
+
         </div>
     </div>
 
