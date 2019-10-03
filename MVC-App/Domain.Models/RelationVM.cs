@@ -48,8 +48,6 @@ namespace MVC_App.Domain.Models
         [DataType(DataType.PostalCode, ErrorMessage = "Invalid Postal Code")]
         public string PostalCode { get; set; }
 
-        public string PostalCodeMask { get; set; }
-
         [Required]
         [MinValue(1)]
         [MaxValue(int.MaxValue)]

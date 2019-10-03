@@ -13,5 +13,21 @@ namespace MVC_App.Domain.Models
         public SelectList Categories { get; set; }
 
         public List<Country> Countries { get; set; }
+
+        public string SortOrderByName { get; set; }
+
+        public string SortOrderByFullName { get; set; }
+
+        public string SortOrderByTelephoneNumber { get; set; }
+
+        public string SortOrderByEmail { get; set; }
+
+        public string SortOrderByCountry { get; set; }
+
+        public string SortOrderByCity { get; set; }
+
+        public string SortOrderByStreet { get; set; }
+
+        public string SortOrderByPostalCode { get; set; }
     }
 }

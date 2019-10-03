@@ -24,28 +24,28 @@
     <tr>
 
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().Name)
+            @Html.ActionLink("Name", "Index", new { sortOrder = Model.SortOrderByName })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().FullName)
+            @Html.ActionLink("Full Name", "Index", new { sortOrder = Model.SortOrderByFullName })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().Email)
+            @Html.ActionLink("Email", "Index", new { sortOrder = Model.SortOrderByEmail })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().TelephoneNumber)
+            @Html.ActionLink("Telephone Number", "Index", new { sortOrder = Model.SortOrderByTelephoneNumber })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().CountryId)
+            @Html.ActionLink("Country", "Index", new { sortOrder = Model.SortOrderByCountry })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().City)
+            @Html.ActionLink("City", "Index", new { sortOrder = Model.SortOrderByCity })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().Street)
+            @Html.ActionLink("Street", "Index", new { sortOrder = Model.SortOrderByStreet })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().PostalCode)
+            @Html.ActionLink("Postal Code", "Index", new { sortOrder = Model.SortOrderByPostalCode })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.RelationViewModels.First().StreetNumber)

@@ -45,8 +45,6 @@ namespace MVC_App.Services
 
         public async Task<List<RelationVM>> InitRelationModels()
         {
-            
-
             var relationModels = from relation in _unitOfWork.RelationRepository.Get()
                                  join relationAddress in _unitOfWork.RelationAddressRepository.Get() on relation.Id equals relationAddress.RelationId
                                  join country in _unitOfWork.CountryRepository.Get() on relationAddress.CountryId equals country.Id
@@ -55,7 +53,10 @@ namespace MVC_App.Services
                                  {
                                      Id = relation.Id,
                                      RelationAddressId = relationAddress.Id,
-                                     Categories = (from relationCategory in _unitOfWork.RelationCategoryRepository.Get() where relationCategory.RelationId == relation.Id select relationCategory.CategoryId).ToList(),
+                                     Categories = (from relationCategory in _unitOfWork.RelationCategoryRepository.Get()
+                                                   where relationCategory.RelationId == relation.Id
+                                                   select relationCategory.CategoryId)
+                                                   .ToList(),
                                      Name = relation.Name,
                                      FullName = relation.FullName,
                                      TelephoneNumber = relation.TelephoneNumber,
@@ -65,7 +66,6 @@ namespace MVC_App.Services
                                      City = relationAddress.City,
                                      Street = relationAddress.Street,
                                      PostalCode = relationAddress.PostalCode,
-                                     PostalCodeMask = country.PostalCodeFormat,
                                      StreetNumber = relationAddress.Number ?? 0
                                  };
             return relationModels.ToList();
