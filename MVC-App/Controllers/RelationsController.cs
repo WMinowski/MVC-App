@@ -101,7 +101,7 @@ namespace MVC_App.Controllers
         {
             var relationVM = new CreateEditRelationVM { Countries = relationService.Countries };
 
-            return View(relationVM);
+            return PartialView(relationVM);
         }
 
         // POST: Relations/Create
@@ -142,7 +142,7 @@ namespace MVC_App.Controllers
 
             var editRelationVM = new CreateEditRelationVM { Relation = relationModels.First(r => r.Id == relation.Id), Countries = relationService.Countries };
 
-            return View(editRelationVM);
+            return PartialView(editRelationVM);
         }
 
         // POST: Relations/Edit/5
@@ -158,7 +158,7 @@ namespace MVC_App.Controllers
 
                 return RedirectToAction("Index");
             }
-            return View(relationVM);
+            return PartialView(relationVM);
         }
 
         // GET: Relations/Delete/5
@@ -176,7 +176,7 @@ namespace MVC_App.Controllers
                 return HttpNotFound();
             }
 
-            return View(relation);
+            return PartialView(relation);
         }
 
         // POST: Relations/Delete/5
