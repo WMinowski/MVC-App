@@ -25,73 +25,11 @@ namespace MVC_App.Controllers
         }
         
         // GET: Relations
-        public async Task<ActionResult> Index(Guid? categoryId, string sortOrder)
+        public async Task<ActionResult> Index(Guid? categoryId, string sortOrder, bool? IsDescOrder)
         {
-            var list = await relationService.GetAsync(categoryId);
+            var list = await relationService.GetAsync(categoryId, sortOrder, IsDescOrder ?? false);
 
-            list.SortOrderByName = sortOrder == "Name" ? "Name desc" : "Name";
-            list.SortOrderByFullName = sortOrder == "FullName" ? "FullName desc" : "FullName";
-            list.SortOrderByTelephoneNumber = sortOrder == "TelephoneNumber" ? "TelephoneNumber desc" : "TelephoneNumber";
-            list.SortOrderByEmail = sortOrder == "Email" ? "Email desc" : "Email";
-            list.SortOrderByCountry = sortOrder == "Country" ? "Country desc" : "Country";
-            list.SortOrderByCity = sortOrder == "City" ? "City desc" : "City";
-            list.SortOrderByStreet = sortOrder == "Street" ? "Street desc" : "Street";
-            list.SortOrderByPostalCode = sortOrder == "PostalCode" ? "PostalCode desc" : "PostalCode";
-
-            switch (sortOrder)
-            {
-                case "Name":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.Name);
-                    break;
-                case "Name desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.Name);
-                    break;
-                case "FullName":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.FullName);
-                    break;
-                case "FullName desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.FullName);
-                    break;
-                case "TelephoneNumber":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.TelephoneNumber);
-                    break;
-                case "TelephoneNumber desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.TelephoneNumber);
-                    break;
-                case "Email":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.Email);
-                    break;
-                case "Email desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.Email);
-                    break;
-                case "Country":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.CountryId);
-                    break;
-                case "Country desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.CountryId);
-                    break;
-                case "City":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.City);
-                    break;
-                case "City desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.City);
-                    break;
-                case "Street":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.Street);
-                    break;
-                case "Street desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.Street);
-                    break;
-                case "PostalCode":
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.PostalCode);
-                    break;
-                case "PostalCode desc":
-                    list.RelationViewModels = list.RelationViewModels.OrderByDescending(s => s.PostalCode);
-                    break;
-                default:
-                    list.RelationViewModels = list.RelationViewModels.OrderBy(s => s.Name);
-                    break;
-            }
+            list.IsDescOrder = !IsDescOrder ?? false;
 
             return View(list);
         }

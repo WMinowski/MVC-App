@@ -11,7 +11,7 @@
 
         $(function () {
             $.ajaxSetup({ cache: false });
-           $(".RelationItem").click(function (e) {
+           $(".relation-item").click(function (e) {
 
                 e.preventDefault();
                 $.get(this.href, function (data) {
@@ -26,7 +26,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "", new { @class = "RelationItem" })
+    @Html.ActionLink("Create New", "Create", "", new { @class = "relation-item" })
 </p>
 
 <form method="get">
@@ -46,28 +46,28 @@
     <tr>
 
         <th>
-            @Html.ActionLink("Name", "Index", new { sortOrder = Model.SortOrderByName })
+            @Html.ActionLink("Name", "Index", new { sortOrder = "Name" , IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("Full Name", "Index", new { sortOrder = Model.SortOrderByFullName })
+            @Html.ActionLink("Full Name", "Index", new { sortOrder = "FullName", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("Email", "Index", new { sortOrder = Model.SortOrderByEmail })
+            @Html.ActionLink("Email", "Index", new { sortOrder = "Email", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("Telephone Number", "Index", new { sortOrder = Model.SortOrderByTelephoneNumber })
+            @Html.ActionLink("Telephone Number", "Index", new { sortOrder = "TelephoneNumber", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("Country", "Index", new { sortOrder = Model.SortOrderByCountry })
+            @Html.ActionLink("Country", "Index", new { sortOrder = "Country", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("City", "Index", new { sortOrder = Model.SortOrderByCity })
+            @Html.ActionLink("City", "Index", new { sortOrder = "City", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("Street", "Index", new { sortOrder = Model.SortOrderByStreet })
+            @Html.ActionLink("Street", "Index", new { sortOrder = "Street", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
-            @Html.ActionLink("Postal Code", "Index", new { sortOrder = Model.SortOrderByPostalCode })
+            @Html.ActionLink("Postal Code", "Index", new { sortOrder = "PostalCode", IsDescOrder = Model.IsDescOrder })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.RelationViewModels.First().StreetNumber)
@@ -106,8 +106,8 @@
                 @Html.DisplayFor(modelItem => item.StreetNumber)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "RelationItem" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "RelationItem" })
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "relation-item" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "relation-item" })
             </td>
         </tr>
     }
