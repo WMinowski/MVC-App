@@ -26,7 +26,8 @@
 <h2>Relation Grid</h2>
 
 <p>
-    <input type="button" value="Create" class="btn btn-default"  />
+    @Html.ActionLink("Create New", "Create", "", new { @class = "relation-item" })
+    <input type="button" value="Create" class="btn btn-primary" />
 </p>
 
 <form method="get">

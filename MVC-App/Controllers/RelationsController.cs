@@ -51,7 +51,7 @@ namespace MVC_App.Controllers
             {
                 relationVM.Countries = relationService.Countries;
 
-                return View(relationVM);
+                return PartialView(relationVM);
             }
 
             await relationService.Create(relationVM);
