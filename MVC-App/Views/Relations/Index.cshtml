@@ -23,18 +23,17 @@
     </script>
 }
 
-<h2>Index</h2>
+<h2>Relation Grid</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "", new { @class = "relation-item" })
+    <input type="button" value="Create" class="btn btn-default"  />
 </p>
 
 <form method="get">
     <div class="form-inline">
-        <label class="control-label">Категория: </label>
-        @Html.DropDownList("categoryId", Model.Categories as SelectList,
-                    htmlAttributes: new { @class = "form-control" })
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+        <label class="control-label">Category: </label>
+        @Html.DropDownList("categoryId", Model.Categories as SelectList, new { @class = "form-control" })
+        <input type="submit" value="Filter" class="btn btn-default" />
     </div>
 </form>
 
@@ -42,32 +41,33 @@
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
 
+<br />
+
 <table class="table">
     <tr>
-
         <th>
-            @Html.ActionLink("Name", "Index", new { sortOrder = "Name" , IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Name", "Index", new { sortBy = "Name" , orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("Full Name", "Index", new { sortOrder = "FullName", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Full Name", "Index", new { sortBy = "FullName", orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("Email", "Index", new { sortOrder = "Email", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Email", "Index", new { sortBy = "Email", orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("Telephone Number", "Index", new { sortOrder = "TelephoneNumber", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Telephone Number", "Index", new { sortBy = "TelephoneNumber", orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("Country", "Index", new { sortOrder = "Country", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Country", "Index", new { sortBy = "Country", orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("City", "Index", new { sortOrder = "City", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("City", "Index", new { sortBy = "City", orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("Street", "Index", new { sortOrder = "Street", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Street", "Index", new { sortBy = "Street", orderBy = Model.OrderBy })
         </th>
         <th>
-            @Html.ActionLink("Postal Code", "Index", new { sortOrder = "PostalCode", IsDescOrder = Model.IsDescOrder })
+            @Html.ActionLink("Postal Code", "Index", new { sortBy = "PostalCode", orderBy = Model.OrderBy })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.RelationViewModels.First().StreetNumber)
@@ -111,5 +111,4 @@
             </td>
         </tr>
     }
-
 </table>

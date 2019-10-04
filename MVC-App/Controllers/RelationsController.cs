@@ -25,11 +25,9 @@ namespace MVC_App.Controllers
         }
         
         // GET: Relations
-        public async Task<ActionResult> Index(Guid? categoryId, string sortOrder, bool? IsDescOrder)
+        public async Task<ActionResult> Index(Guid? categoryId, string sortBy, string orderBy)
         {
-            var list = await relationService.GetAsync(categoryId, sortOrder, IsDescOrder ?? false);
-
-            list.IsDescOrder = !IsDescOrder ?? false;
+            var list = await relationService.GetAsync(categoryId, sortBy, orderBy);
 
             return View(list);
         }
@@ -96,6 +94,8 @@ namespace MVC_App.Controllers
 
                 return RedirectToAction("Index");
             }
+            relationVM.Countries = relationService.Countries;
+
             return PartialView(relationVM);
         }
 

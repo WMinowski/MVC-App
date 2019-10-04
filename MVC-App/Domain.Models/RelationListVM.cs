@@ -14,6 +14,6 @@ namespace MVC_App.Domain.Models
 
         public List<Country> Countries { get; set; }
 
-        public bool IsDescOrder { get; set; }
+        public string OrderBy { get; set; }
     }
 }

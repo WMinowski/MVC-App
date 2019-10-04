@@ -175,7 +175,7 @@ namespace MVC_App.Services
             return _unitOfWork.RelationRepository.GetByID(id);
         }
 
-        public async Task<RelationListVM> GetAsync(Guid? categoryId, string sortOrder, bool IsDescOrder)
+        public async Task<RelationListVM> GetAsync(Guid? categoryId, string sortBy, string orderBy)
         {
             var countries = _unitOfWork.CountryRepository.Get().ToList();
 
@@ -188,45 +188,45 @@ namespace MVC_App.Services
 
             var relationListVM = new RelationListVM { RelationViewModels = relationModels, Categories = Categories, Countries = countries };
 
-            switch (sortOrder)
+            switch (sortBy)
             {
                 case "Name":
-                    relationListVM.RelationViewModels = !IsDescOrder
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.Name)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.Name);
                     break;
                 case "FullName":
-                    relationListVM.RelationViewModels = !IsDescOrder
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.FullName)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.FullName);
                     break;
                 case "TelephoneNumber":
-                    relationListVM.RelationViewModels = !IsDescOrder 
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.TelephoneNumber)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.TelephoneNumber);
                     break;
                 case "Email":
-                    relationListVM.RelationViewModels = !IsDescOrder 
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.Email)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.Email);
                     break;
                 case "Country":
-                    relationListVM.RelationViewModels = !IsDescOrder 
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.CountryId)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.CountryId);
                     break;
                 case "City":
-                    relationListVM.RelationViewModels = !IsDescOrder 
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.City)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.City);
                     break;
                 case "Street":
-                    relationListVM.RelationViewModels = !IsDescOrder
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.Street)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.Street);
                     break;
                 case "PostalCode":
-                    relationListVM.RelationViewModels = !IsDescOrder
+                    relationListVM.RelationViewModels = orderBy == "Asc"
                         ? relationListVM.RelationViewModels.OrderBy(s => s.PostalCode)
                         : relationListVM.RelationViewModels.OrderByDescending(s => s.PostalCode);
                     break;
@@ -234,6 +234,8 @@ namespace MVC_App.Services
                     relationListVM.RelationViewModels = relationListVM.RelationViewModels.OrderBy(s => s.Name);
                     break;
             }
+
+            relationListVM.OrderBy = orderBy == "Asc" ? "Desc" : "Asc";
 
             return relationListVM;
         }
