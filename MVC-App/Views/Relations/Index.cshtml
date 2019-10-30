@@ -7,109 +7,174 @@
 
 @section scripts
 {
+    <link href="@Url.Content("~/Content/toastr.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/toastr.js")"></script>
     <script type="text/javascript">
 
         $(function () {
             $.ajaxSetup({ cache: false });
-           $(".relation-item").click(function (e) {
-
-                e.preventDefault();
+            $(".edit-modal").click(function (e) {
+                //e.preventDefault();
                 $.get(this.href, function (data) {
-                    $('#dialogContent').html(data);
-                    $('#modDialog').modal('show');
+                    $('#edit-form').html(data);
+                    $('#EditModal').modal('show');
                 });
             });
         })
+
+        $(function () {
+            $.ajaxSetup({ cache: false });
+            $(".delete-modal").click(function (e) {
+                //e.preventDefault();
+                $.get(this.href, function (data) {
+                    $('#delete-form').html(data);
+                    $('#DeleteModal').modal('show');
+                });
+            });
+        })
+
+        $(document).ready(function () {
+            $("#ddlCategory").change(function () {
+                var categoryId = $("#ddlCategory").val();
+                var path = '@(Url.Action("RenderRelationPartialView", "Relations", null, Request.Url.Scheme))?categoryId=' + categoryId;
+                $("#dvCategoryResults").load(path);
+            });
+        });
+
+        $("#create-submit-button").click(function (e) {
+            $("#CreateForm").submit();
+
+        });
+
+        $("#edit-submit-button").click(function (e) {
+            $("#EditForm").submit();
+            
+        });
+
+        $("#delete-submit-button").click(function (e) {
+            $("#DeleteForm").submit();
+
+        });
+
+        function CreateOnSuccess(result) {
+            if (result.isValid) {
+                $("#CreateModal").modal('hide');
+                $("#dvCategoryResults").html(result.html);
+                $("#CreateForm").each(function(){
+                    this.reset();
+                });
+                	
+                $( ".field-validation-error" ).remove();
+                toastr.success("Relation created!");
+            }
+            else {
+                $('#create-form').html(result.html);
+                toastr.error("Error: fill the form properly!");
+            }
+        }
+
+        function EditOnSuccess(result) {
+            if (result.isValid) {
+                $('#EditModal').modal('hide');
+                $("#dvCategoryResults").html(result.html);
+                toastr.success("Relation edited!");
+            }
+            else {
+                $('#edit-form').html(result.html);
+                toastr.error("Error: fill the form properly!");
+            }
+        }
+
+        function DeleteOnSuccess(result) {
+            $('#DeleteModal').modal('hide');
+            $("#dvCategoryResults").html(result.html);
+            toastr.success("Relation deleted!");
+        }
     </script>
+
 }
 
 <h2>Relation Grid</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create", "", new { @class = "relation-item" })
-    <input type="button" value="Create" class="btn btn-primary" />
+    <input type="button" class="btn btn-primary" value="Create" data-toggle="modal" data-target="#CreateModal" />
 </p>
 
-<form method="get">
-    <div class="form-inline">
-        <label class="control-label">Category: </label>
-        @Html.DropDownList("categoryId", Model.Categories as SelectList, new { @class = "form-control" })
-        <input type="submit" value="Filter" class="btn btn-default" />
+<div id="container">
+    <label for="ddlCategory"><strong>Select a category</strong></label>
+    @Html.DropDownList("categoryId", Model.Categories, new { id = "ddlCategory", @class = "test" })
+    <br /><br />
+    <div id="dvCategoryResults">
+        @{Html.RenderPartial("RenderRelationPartialView", Model);}
     </div>
-</form>
+</div>
 
 <div id="modDialog" class="modal fade">
     <div id="dialogContent" class="modal-dialog"></div>
 </div>
 
-<br />
+<div id="result"></div>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.ActionLink("Name", "Index", new { sortBy = "Name" , orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("Full Name", "Index", new { sortBy = "FullName", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("Email", "Index", new { sortBy = "Email", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("Telephone Number", "Index", new { sortBy = "TelephoneNumber", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("Country", "Index", new { sortBy = "Country", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("City", "Index", new { sortBy = "City", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("Street", "Index", new { sortBy = "Street", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.ActionLink("Postal Code", "Index", new { sortBy = "PostalCode", orderBy = Model.OrderBy })
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RelationViewModels.First().StreetNumber)
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model.RelationViewModels)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TelephoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => Model.Countries.First(p => p.Id == item.CountryId).Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.City)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Street)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PostalCode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StreetNumber)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "relation-item" }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "relation-item" })
-            </td>
-        </tr>
-    }
-</table>
+<div class="modal" id="CreateModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4>Relation</h4>
+            </div>
+            <div class="modal-body">
+                <div id="create-form">
+                    @Html.Partial("Create", new MVC_App.Domain.Models.CreateEditRelationVM { Countries = Model.Countries as IEnumerable<SelectListItem> })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="button" id="create-submit-button" value="Create" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="EditModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4>Relation</h4>
+            </div>
+            <div class="modal-body">
+                <div id="edit-form">
+                    @Html.Partial("Edit", new MVC_App.Domain.Models.CreateEditRelationVM { Countries = Model.Countries as IEnumerable<SelectListItem> })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="button" id="edit-submit-button" value="Edit" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="DeleteModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4>Relation</h4>
+            </div>
+            <div class="modal-body">
+                <div id="delete-form">
+                    @Html.Partial("Delete", new MVC_App.Domain.Models.Relation { })
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

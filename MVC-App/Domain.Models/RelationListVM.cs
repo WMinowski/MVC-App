@@ -10,9 +10,9 @@ namespace MVC_App.Domain.Models
     {
         public IEnumerable<RelationVM> RelationViewModels { get; set; }
 
-        public SelectList Categories { get; set; }
+        public IEnumerable<SelectListItem> Categories { get; set; }
 
-        public List<Country> Countries { get; set; }
+        public IEnumerable<SelectListItem> Countries { get; set; }
 
         public string OrderBy { get; set; }
     }

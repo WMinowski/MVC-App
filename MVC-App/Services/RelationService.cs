@@ -175,9 +175,9 @@ namespace MVC_App.Services
             return _unitOfWork.RelationRepository.GetByID(id);
         }
 
-        public async Task<RelationListVM> GetAsync(Guid? categoryId, string sortBy, string orderBy)
+        public async Task<RelationListVM> GetAsync(Guid? categoryId = null, string sortBy = "Name", string orderBy = "Asc")
         {
-            var countries = _unitOfWork.CountryRepository.Get().ToList();
+            var countries = new SelectList(_unitOfWork.CountryRepository.Get(), "Id", "Name");
 
             var relationModels = await InitRelationModels();
 

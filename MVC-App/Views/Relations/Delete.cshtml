@@ -3,63 +3,49 @@
 @{
     ViewBag.Title = "Delete";
 }
+    <div id="DeleteForm">
+        @using (Ajax.BeginForm("Delete", "Relations", new AjaxOptions { HttpMethod = "POST", OnSuccess = "DeleteOnSuccess" }, new { id = "DeleteForm" }))
+        {
+            @Html.AntiForgeryToken()
+            <h3>Are you sure you want to delete this?</h3>
+            <hr />
+            <dl class="dl-horizontal">
 
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h2>Delete</h2>
-        </div>
-        <div class="modal-body">
-            <div>
-                <h3>Are you sure you want to delete this?</h3>
-                <h4>Relation</h4>
-                <hr />
-                <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.Name)
-                    </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </dt>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.FullName)
-                    </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.FullName)
+                </dd>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.FullName)
-                    </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.EMailAddress)
+                </dt>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.EMailAddress)
-                    </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.EMailAddress)
+                </dd>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.EMailAddress)
-                    </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.TelephoneNumber)
+                </dt>
 
-                    <dt>
-                        @Html.DisplayNameFor(model => model.TelephoneNumber)
-                    </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.TelephoneNumber)
+                </dd>
 
-                    <dd>
-                        @Html.DisplayFor(model => model.TelephoneNumber)
-                    </dd>
-
-                </dl>
+            </dl>
+            <div class="form-actions no-color">
+                <input type="submit" id="delete-submit-button" value="Delete" class="btn btn-primary" />
             </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="form-actions no-color">
-                    <input type="submit" value="Delete" class="btn btn-primary" />
-                </div>
-            }
-        </div>
+        }
     </div>

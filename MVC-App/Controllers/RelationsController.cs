@@ -10,26 +10,34 @@ using System.Web.Mvc;
 using MVC_App.Domain.Models;
 using MVC_App.Services;
 using Ninject;
+using System.IO;
 
 namespace MVC_App.Controllers
 {
     public class RelationsController : Controller
     {
         private readonly IRelationService relationService;
-        
+
         public RelationsController()
         {
             IKernel ninjectKernel = new StandardKernel();
             ninjectKernel.Bind<IRelationService>().To<RelationService>();
             relationService = ninjectKernel.Get<IRelationService>();
         }
-        
+
         // GET: Relations
-        public async Task<ActionResult> Index(Guid? categoryId, string sortBy, string orderBy)
+        public async Task<ActionResult> Index()
+        {
+            var list = await relationService.GetAsync(Guid.Empty, "Name", "Asc");
+
+            return View(list);
+        }
+
+        public async Task<ActionResult> RenderRelationPartialView(Guid? categoryId, string sortBy, string orderBy)
         {
             var list = await relationService.GetAsync(categoryId, sortBy, orderBy);
 
-            return View(list);
+            return PartialView(list);
         }
 
         // GET: Relations/Create
@@ -47,16 +55,26 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Relation,Countries")] CreateEditRelationVM relationVM)
         {
-            if (!ModelState.IsValid)
-            {
-                relationVM.Countries = relationService.Countries;
+            string html;
+            bool isValid = ModelState.IsValid;
 
-                return PartialView(relationVM);
+            relationVM.Countries = relationService.Countries;
+
+            if (!isValid)
+            {
+                html = RenderRazorViewToString("~/Views/Relations/Create.cshtml", relationVM);
+            }
+            else
+            {
+
+                await relationService.Create(relationVM);
+
+                var relationList = await relationService.GetAsync();
+
+                html = RenderRazorViewToString("~/Views/Shared/RenderRelationPartialView.cshtml", relationList);
             }
 
-            await relationService.Create(relationVM);
-
-            return RedirectToAction("Index");
+            return Json(new { isValid = isValid, html = html });
         }
 
         // GET: Relations/Edit/5
@@ -88,15 +106,26 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Relation,Countries")] CreateEditRelationVM relationVM)
         {
-            if (ModelState.IsValid)
-            {
-                await relationService.Edit(relationVM);
+            string html;
+            bool isValid = ModelState.IsValid;
 
-                return RedirectToAction("Index");
-            }
             relationVM.Countries = relationService.Countries;
 
-            return PartialView(relationVM);
+            if (!isValid)
+            {
+                html = RenderRazorViewToString("~/Views/Relations/Edit.cshtml", relationVM);
+            }
+            else
+            {
+
+                await relationService.Edit(relationVM);
+
+                var relationList = await relationService.GetAsync();
+
+                html = RenderRazorViewToString("~/Views/Shared/RenderRelationPartialView.cshtml", relationList);
+            }
+
+            return Json(new { isValid = isValid, html = html });
         }
 
         // GET: Relations/Delete/5
@@ -124,7 +153,26 @@ namespace MVC_App.Controllers
         {
             await relationService.Delete(id);
 
-            return RedirectToAction("Index");
+            var relationList = await relationService.GetAsync();
+
+            var html = RenderRazorViewToString("~/Views/Shared/RenderRelationPartialView.cshtml", relationList);
+
+            return Json(new { html = html });
+        }
+
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
+                                                                         viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,
+                                             ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
         }
     }
 }

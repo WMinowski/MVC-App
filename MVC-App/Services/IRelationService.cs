@@ -20,7 +20,7 @@ namespace MVC_App.Services
 
         Task<List<RelationVM>> InitRelationModels();
 
-        Task<RelationListVM> GetAsync(Guid? categoryId, string sortBy, string orderBy);
+        Task<RelationListVM> GetAsync(Guid? categoryId = null, string sortBy = "Name", string orderBy = "Asc");
 
         Task Create(CreateEditRelationVM relationVM);
 
