@@ -12,8 +12,7 @@
     <script src="@Url.Content("~/Scripts/toastr.js")"></script>
     <script type="text/javascript">
 
-        $(function () {
-            $.ajaxSetup({ cache: false });
+        $(document).ready(function () {
             $(".edit-modal").click(function (e) {
                 //e.preventDefault();
                 $.get(this.href, function (data) {
@@ -21,10 +20,7 @@
                     $('#EditModal').modal('show');
                 });
             });
-        })
 
-        $(function () {
-            $.ajaxSetup({ cache: false });
             $(".delete-modal").click(function (e) {
                 //e.preventDefault();
                 $.get(this.href, function (data) {
@@ -32,29 +28,24 @@
                     $('#DeleteModal').modal('show');
                 });
             });
-        })
 
-        $(document).ready(function () {
+            $("#create-submit-button").click(function (e) {
+                $("#CreateForm").submit();
+            });
+
+            $("#edit-submit-button").click(function (e) {
+                $("#EditForm").submit();
+            });
+
+            $("#delete-submit-button").click(function (e) {
+                $("#DeleteForm").submit();
+            });
+
             $("#ddlCategory").change(function () {
                 var categoryId = $("#ddlCategory").val();
                 var path = '@(Url.Action("RenderRelationPartialView", "Relations", null, Request.Url.Scheme))?categoryId=' + categoryId;
                 $("#dvCategoryResults").load(path);
             });
-        });
-
-        $("#create-submit-button").click(function (e) {
-            $("#CreateForm").submit();
-
-        });
-
-        $("#edit-submit-button").click(function (e) {
-            $("#EditForm").submit();
-            
-        });
-
-        $("#delete-submit-button").click(function (e) {
-            $("#DeleteForm").submit();
-
         });
 
         function CreateOnSuccess(result) {
@@ -65,7 +56,7 @@
                     this.reset();
                 });
                 	
-                $( ".field-validation-error" ).remove();
+                $(".field-validation-error").remove();
                 toastr.success("Relation created!");
             }
             else {
@@ -173,6 +164,7 @@
             <div class="modal-footer">
                 <div class="col-md-offset-2 col-md-10">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <input type="submit" id="delete-submit-button" value="Delete" class="btn btn-primary" />
                 </div>
             </div>
         </div>

@@ -3,49 +3,48 @@
 @{
     ViewBag.Title = "Delete";
 }
-    <div id="DeleteForm">
-        @using (Ajax.BeginForm("Delete", "Relations", new AjaxOptions { HttpMethod = "POST", OnSuccess = "DeleteOnSuccess" }, new { id = "DeleteForm" }))
-        {
-            @Html.AntiForgeryToken()
-            <h3>Are you sure you want to delete this?</h3>
-            <hr />
-            <dl class="dl-horizontal">
+    <div id="delete-form">
+        <div class="form-horizontal">
+            @using (Ajax.BeginForm("Delete", "Relations", new AjaxOptions { HttpMethod = "POST", OnSuccess = "DeleteOnSuccess" }, new { id = "DeleteForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <h3>Are you sure you want to delete this?</h3>
+                <hr />
+                <dl class="dl-horizontal">
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.Name)
-                </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.FullName)
-                </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.FullName)
-                </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.FullName)
+                    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.EMailAddress)
-                </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.EMailAddress)
+                    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.EMailAddress)
-                </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.EMailAddress)
+                    </dd>
 
-                <dt>
-                    @Html.DisplayNameFor(model => model.TelephoneNumber)
-                </dt>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.TelephoneNumber)
+                    </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.TelephoneNumber)
-                </dd>
+                    <dd>
+                        @Html.DisplayFor(model => model.TelephoneNumber)
+                    </dd>
 
-            </dl>
-            <div class="form-actions no-color">
-                <input type="submit" id="delete-submit-button" value="Delete" class="btn btn-primary" />
-            </div>
-        }
+                </dl>
+            }
+        </div>
     </div>

@@ -16,7 +16,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.Name, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.Name, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Relation.Name, "", new { @class = "text-danger" })
                 </div>
@@ -24,7 +24,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.FullName, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.FullName, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Relation.FullName, "", new { @class = "text-danger" })
                 </div>
@@ -32,7 +32,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.Email, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.Email, new { @class = "form-control", type = "email" })
                     @Html.ValidationMessageFor(model => model.Relation.Email, "", new { @class = "text-danger" })
                 </div>
@@ -40,7 +40,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.TelephoneNumber, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.TelephoneNumber, new { @class = "form-control", type = "tel" })
                     @Html.ValidationMessageFor(model => model.Relation.TelephoneNumber, "", new { @class = "text-danger" })
                 </div>
@@ -48,7 +48,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.CountryName, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.DropDownListFor(model => model.Relation.CountryId, Model.Countries, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Relation.CountryName, "", new { @class = "text-danger" })
                 </div>
@@ -56,7 +56,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.City, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.City, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Relation.City, "", new { @class = "text-danger" })
                 </div>
@@ -64,7 +64,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.Street, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.Street, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Relation.Street, "", new { @class = "text-danger" })
                 </div>
@@ -72,7 +72,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.PostalCode, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.TextBoxFor(model => model.Relation.PostalCode, new { @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.Relation.PostalCode, "", new { @class = "text-danger" })
                 </div>
@@ -80,7 +80,7 @@
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Relation.StreetNumber, new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
+                <div class="col-md-12">
                     @Html.EditorFor(model => model.Relation.StreetNumber, new { htmlAttributes = new { @class = "form-control" } })
                     @Html.ValidationMessageFor(model => model.Relation.StreetNumber, "", new { @class = "text-danger" })
                 </div>

@@ -28,7 +28,7 @@ namespace MVC_App.Controllers
         // GET: Relations
         public async Task<ActionResult> Index()
         {
-            var list = await relationService.GetAsync(Guid.Empty, "Name", "Asc");
+            var list = await relationService.GetAsync();
 
             return View(list);
         }
@@ -66,7 +66,6 @@ namespace MVC_App.Controllers
             }
             else
             {
-
                 await relationService.Create(relationVM);
 
                 var relationList = await relationService.GetAsync();
@@ -117,7 +116,6 @@ namespace MVC_App.Controllers
             }
             else
             {
-
                 await relationService.Edit(relationVM);
 
                 var relationList = await relationService.GetAsync();
@@ -165,10 +163,8 @@ namespace MVC_App.Controllers
             ViewData.Model = model;
             using (var sw = new StringWriter())
             {
-                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
-                                                                         viewName);
-                var viewContext = new ViewContext(ControllerContext, viewResult.View,
-                                             ViewData, TempData, sw);
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
                 viewResult.View.Render(viewContext, sw);
                 viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
                 return sw.GetStringBuilder().ToString();
