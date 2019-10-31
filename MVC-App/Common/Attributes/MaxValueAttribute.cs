@@ -16,7 +16,12 @@ namespace MVC_App.Common.Attributes
         }
         public override bool IsValid(object value)
         {
-            int appliedValue = 0;
+            if (value == null)
+            {
+                this.ErrorMessage = "No value entered";
+                return false;
+            }
+            int appliedValue;
             if (int.TryParse(value.ToString(), out appliedValue))
             {
                 if (appliedValue <= _maxValue)

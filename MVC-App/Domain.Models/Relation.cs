@@ -22,7 +22,7 @@ namespace MVC_App.Domain.Models
 
         [Required]
         [StringLength(50)]
-        public string CreatedBy { get; set; } = "admin";
+        public string CreatedBy { get; set; }
 
         public DateTime? ModifiedAt { get; set; }
 

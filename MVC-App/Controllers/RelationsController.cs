@@ -10,27 +10,34 @@ using System.Web.Mvc;
 using MVC_App.Domain.Models;
 using MVC_App.Services;
 using Ninject;
+using System.IO;
 
 namespace MVC_App.Controllers
 {
     public class RelationsController : Controller
     {
         private readonly IRelationService relationService;
-        
+
         public RelationsController()
         {
             IKernel ninjectKernel = new StandardKernel();
             ninjectKernel.Bind<IRelationService>().To<RelationService>();
             relationService = ninjectKernel.Get<IRelationService>();
         }
-        
 
         // GET: Relations
-        public async Task<ActionResult> Index(Guid? categoryId)
+        public async Task<ActionResult> Index()
         {
-            var list = await relationService.GetAsync(categoryId);
+            var list = await relationService.GetAsync();
 
             return View(list);
+        }
+
+        public async Task<ActionResult> RenderRelationPartialView(Guid? categoryId, string sortBy, string orderBy)
+        {
+            var list = await relationService.GetAsync(categoryId, sortBy, orderBy);
+
+            return PartialView(list);
         }
 
         // GET: Relations/Create
@@ -38,7 +45,7 @@ namespace MVC_App.Controllers
         {
             var relationVM = new CreateEditRelationVM { Countries = relationService.Countries };
 
-            return View(relationVM);
+            return PartialView(relationVM);
         }
 
         // POST: Relations/Create
@@ -48,23 +55,30 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create([Bind(Include = "Relation,Countries")] CreateEditRelationVM relationVM)
         {
-            if (!ModelState.IsValid)
+            string html;
+            bool isValid = ModelState.IsValid;
+
+            relationVM.Countries = relationService.Countries;
+
+            if (!isValid)
             {
+                html = RenderRazorViewToString("~/Views/Relations/Create.cshtml", relationVM);
+            }
+            else
+            {
+                await relationService.Create(relationVM);
 
-                relationVM.Countries = relationService.Countries;
+                var relationList = await relationService.GetAsync();
 
-                return View(relationVM);
+                html = RenderRazorViewToString("~/Views/Shared/RenderRelationPartialView.cshtml", relationList);
             }
 
-            await relationService.Create(relationVM);
-
-            return RedirectToAction("Index");
+            return Json(new { isValid = isValid, html = html });
         }
 
         // GET: Relations/Edit/5
         public async Task<ActionResult> Edit(Guid? id)
         {
-
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -81,7 +95,7 @@ namespace MVC_App.Controllers
 
             var editRelationVM = new CreateEditRelationVM { Relation = relationModels.First(r => r.Id == relation.Id), Countries = relationService.Countries };
 
-            return View(editRelationVM);
+            return PartialView(editRelationVM);
         }
 
         // POST: Relations/Edit/5
@@ -91,14 +105,25 @@ namespace MVC_App.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit([Bind(Include = "Relation,Countries")] CreateEditRelationVM relationVM)
         {
+            string html;
+            bool isValid = ModelState.IsValid;
 
-            if (ModelState.IsValid)
+            relationVM.Countries = relationService.Countries;
+
+            if (!isValid)
+            {
+                html = RenderRazorViewToString("~/Views/Relations/Edit.cshtml", relationVM);
+            }
+            else
             {
                 await relationService.Edit(relationVM);
 
-                return RedirectToAction("Index");
+                var relationList = await relationService.GetAsync();
+
+                html = RenderRazorViewToString("~/Views/Shared/RenderRelationPartialView.cshtml", relationList);
             }
-            return View(relationVM);
+
+            return Json(new { isValid = isValid, html = html });
         }
 
         // GET: Relations/Delete/5
@@ -116,7 +141,7 @@ namespace MVC_App.Controllers
                 return HttpNotFound();
             }
 
-            return View(relation);
+            return PartialView(relation);
         }
 
         // POST: Relations/Delete/5
@@ -126,7 +151,24 @@ namespace MVC_App.Controllers
         {
             await relationService.Delete(id);
 
-            return RedirectToAction("Index");
+            var relationList = await relationService.GetAsync();
+
+            var html = RenderRazorViewToString("~/Views/Shared/RenderRelationPartialView.cshtml", relationList);
+
+            return Json(new { html = html });
+        }
+
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
         }
     }
 }

@@ -45,8 +45,6 @@ namespace MVC_App.Services
 
         public async Task<List<RelationVM>> InitRelationModels()
         {
-            
-
             var relationModels = from relation in _unitOfWork.RelationRepository.Get()
                                  join relationAddress in _unitOfWork.RelationAddressRepository.Get() on relation.Id equals relationAddress.RelationId
                                  join country in _unitOfWork.CountryRepository.Get() on relationAddress.CountryId equals country.Id
@@ -55,7 +53,10 @@ namespace MVC_App.Services
                                  {
                                      Id = relation.Id,
                                      RelationAddressId = relationAddress.Id,
-                                     Categories = (from relationCategory in _unitOfWork.RelationCategoryRepository.Get() where relationCategory.RelationId == relation.Id select relationCategory.CategoryId).ToList(),
+                                     Categories = (from relationCategory in _unitOfWork.RelationCategoryRepository.Get()
+                                                   where relationCategory.RelationId == relation.Id
+                                                   select relationCategory.CategoryId)
+                                                   .ToList(),
                                      Name = relation.Name,
                                      FullName = relation.FullName,
                                      TelephoneNumber = relation.TelephoneNumber,
@@ -65,7 +66,6 @@ namespace MVC_App.Services
                                      City = relationAddress.City,
                                      Street = relationAddress.Street,
                                      PostalCode = relationAddress.PostalCode,
-                                     PostalCodeMask = country.PostalCodeFormat,
                                      StreetNumber = relationAddress.Number ?? 0
                                  };
             return relationModels.ToList();
@@ -175,9 +175,9 @@ namespace MVC_App.Services
             return _unitOfWork.RelationRepository.GetByID(id);
         }
 
-        public async Task<RelationListVM> GetAsync(Guid? categoryId)
+        public async Task<RelationListVM> GetAsync(Guid? categoryId = null, string sortBy = "Name", string orderBy = "Asc")
         {
-            var countries = _unitOfWork.CountryRepository.Get().ToList();
+            var countries = new SelectList(_unitOfWork.CountryRepository.Get(), "Id", "Name");
 
             var relationModels = await InitRelationModels();
 
@@ -187,6 +187,55 @@ namespace MVC_App.Services
             }
 
             var relationListVM = new RelationListVM { RelationViewModels = relationModels, Categories = Categories, Countries = countries };
+
+            switch (sortBy)
+            {
+                case "Name":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.Name)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.Name);
+                    break;
+                case "FullName":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.FullName)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.FullName);
+                    break;
+                case "TelephoneNumber":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.TelephoneNumber)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.TelephoneNumber);
+                    break;
+                case "Email":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.Email)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.Email);
+                    break;
+                case "Country":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.CountryId)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.CountryId);
+                    break;
+                case "City":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.City)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.City);
+                    break;
+                case "Street":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.Street)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.Street);
+                    break;
+                case "PostalCode":
+                    relationListVM.RelationViewModels = orderBy == "Asc"
+                        ? relationListVM.RelationViewModels.OrderBy(s => s.PostalCode)
+                        : relationListVM.RelationViewModels.OrderByDescending(s => s.PostalCode);
+                    break;
+                default:
+                    relationListVM.RelationViewModels = relationListVM.RelationViewModels.OrderBy(s => s.Name);
+                    break;
+            }
+
+            relationListVM.OrderBy = orderBy == "Asc" ? "Desc" : "Asc";
 
             return relationListVM;
         }
